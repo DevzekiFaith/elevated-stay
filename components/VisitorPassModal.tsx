@@ -4,6 +4,7 @@ import { useState } from "react";
 import { VisitorPass } from "@/lib/types";
 import { ShieldCheck, Share2, Copy, Check, MessageSquare, Clock, Car, User, X, QrCode } from "lucide-react";
 import { QRCodeView } from "./QRCodeView";
+import { Logo } from "./Logo";
 import { useToast } from "./ToastProvider";
 
 interface VisitorPassModalProps {
@@ -94,6 +95,9 @@ export function VisitorPassModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
       <div className="relative w-full max-w-md bg-[#121722] border border-[#C2A774]/30 rounded-2xl p-6 sm:p-7 shadow-2xl text-left">
+        <div className="mb-4">
+          <Logo size="sm" href="" />
+        </div>
         <div className="flex items-center justify-between pb-4 border-b border-white/[0.08] mb-5">
           <div className="flex items-center gap-2.5">
             <div className="p-2 rounded-lg bg-[#C2A774]/10 text-[#C2A774] border border-[#C2A774]/20">

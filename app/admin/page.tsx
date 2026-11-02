@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { Logo } from "@/components/Logo";
 import { useToast } from "@/components/ToastProvider";
 import {
   MOCK_COMPOUNDS,
@@ -1024,6 +1025,9 @@ export default function AdminOperations() {
       {editingClient && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
           <div className="relative w-full max-w-lg bg-[#111722] border border-[#D4AF37]/40 rounded-3xl p-6 sm:p-7 shadow-2xl text-left space-y-5">
+            <div className="mb-2">
+              <Logo size="sm" href="" />
+            </div>
             <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-xl bg-[#D4AF37]/15 border border-[#D4AF37]/30 flex items-center justify-center text-[#D4AF37]">
@@ -1111,6 +1115,9 @@ export default function AdminOperations() {
       {whatsappDispatchClient && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
           <div className="relative w-full max-w-lg bg-[#0e161f] border border-[#25D366]/40 rounded-3xl p-6 sm:p-7 shadow-2xl text-left space-y-4">
+            <div className="mb-2">
+              <Logo size="sm" href="" />
+            </div>
             <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-xl bg-[#25D366]/20 border border-[#25D366]/40 flex items-center justify-center text-[#25D366]">
@@ -1187,6 +1194,9 @@ Your private vault access for ${whatsappDispatchClient.estate} has been authoriz
       {folioModalClient && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
           <div className="relative w-full max-w-2xl bg-[#0f131a] border border-[#D4AF37]/50 rounded-3xl p-7 sm:p-8 shadow-2xl text-left space-y-5">
+            <div className="mb-1">
+              <Logo size="sm" href="" />
+            </div>
             <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-[#D4AF37]/20 border border-[#D4AF37]/40 flex items-center justify-center text-[#D4AF37]">
@@ -1215,6 +1225,7 @@ Your private vault access for ${whatsappDispatchClient.estate} has been authoriz
               </div>
 
               <div className="border-b border-white/10 pb-3 space-y-1">
+                <Logo size="sm" href="" className="mb-2" />
                 <span className="text-[10px] text-[#D4AF37] uppercase tracking-wider block font-bold">
                   ELEVATED STAY ASSET PROTECTION & ESTATE MANAGEMENT
                 </span>
@@ -1303,6 +1314,9 @@ Your private vault access for ${whatsappDispatchClient.estate} has been authoriz
       {showEnrollModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
           <div className="relative w-full max-w-xl bg-[#111722] border border-[#D4AF37]/50 rounded-3xl p-6 sm:p-8 shadow-2xl text-left space-y-5 max-h-[90vh] overflow-y-auto">
+            <div className="mb-2">
+              <Logo size="sm" href="" />
+            </div>
             <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-[#D4AF37]/20 border border-[#D4AF37]/40 flex items-center justify-center text-[#D4AF37]">
@@ -1524,6 +1538,9 @@ Your private vault access for ${whatsappDispatchClient.estate} has been authoriz
       {showOnboardingModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
           <div className="relative w-full max-w-md bg-[#121722] border border-[#C2A774]/30 rounded-2xl p-6 sm:p-7 shadow-2xl text-left">
+            <div className="mb-4">
+              <Logo size="sm" href="" />
+            </div>
             <div className="flex items-center justify-between pb-4 border-b border-white/[0.08] mb-5">
               <div className="flex items-center gap-2">
                 <Building className="w-5 h-5 text-[#C2A774]" />

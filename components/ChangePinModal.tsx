@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Lock, Key, Check, ShieldCheck, X, Eye, EyeOff } from "lucide-react";
+import { Logo } from "@/components/Logo";
 import { useToast } from "@/components/ToastProvider";
 import {
   getClientVaults,
@@ -106,6 +107,10 @@ export function ChangePinModal({
           >
             <X className="w-4 h-4" />
           </button>
+
+          <div className="mb-4">
+            <Logo size="sm" href="" />
+          </div>
 
           <div className="flex items-center gap-3 mb-6">
             <div className="p-3 rounded-2xl bg-[#D4AF37]/15 border border-[#D4AF37]/30 text-[#DFCA9E]">

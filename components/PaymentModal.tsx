@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Transaction } from "@/lib/types";
 import { calculateTransactionSplit, formatNaira } from "@/lib/payment-split";
 import { ShieldCheck, CheckCircle2, Lock, ArrowRight, Building, Wallet, X } from "lucide-react";
+import { Logo } from "./Logo";
 import { useToast } from "./ToastProvider";
 
 interface PaymentModalProps {
@@ -88,14 +89,17 @@ export function PaymentModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
       <div className="relative w-full max-w-lg bg-[#121722] border border-[#C2A774]/40 rounded-2xl shadow-2xl overflow-hidden text-left">
         {/* Header */}
-        <div className="p-5 border-b border-white/[0.08] flex items-center justify-between bg-[#151C27]">
-          <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-lg bg-[#C2A774]/10 text-[#C2A774] border border-[#C2A774]/20">
-              <Lock className="w-5 h-5" />
-            </div>
-            <div>
-              <h3 className="text-base font-semibold text-white">Automated Split Remittance</h3>
-              <p className="text-[11px] text-neutral-400 font-mono">Paystack / Flutterwave Subaccount Router</p>
+        <div className="p-5 border-b border-white/[0.08] flex items-start justify-between bg-[#151C27]">
+          <div className="space-y-2.5">
+            <Logo size="sm" href="" />
+            <div className="flex items-center gap-2.5">
+              <div className="p-2 rounded-lg bg-[#C2A774]/10 text-[#C2A774] border border-[#C2A774]/20">
+                <Lock className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-white">Automated Split Remittance</h3>
+                <p className="text-[11px] text-neutral-400 font-mono">Paystack / Flutterwave Subaccount Router</p>
+              </div>
             </div>
           </div>
           <button

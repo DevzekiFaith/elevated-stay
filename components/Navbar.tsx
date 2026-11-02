@@ -315,10 +315,8 @@ export function Navbar() {
 
               {/* Modal Header */}
               <div className="flex items-start justify-between pb-4 border-b border-white/[0.08] relative z-10">
-                <div className="flex items-center gap-3">
-                  <div className="p-3 rounded-2xl bg-[#D4AF37]/15 border border-[#D4AF37]/30 text-[#DFCA9E] shadow-sm">
-                    <Fingerprint className="w-6 h-6 text-[#D4AF37]" />
-                  </div>
+                <div className="space-y-3">
+                  <Logo size="sm" href="" />
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono tracking-wider bg-[#D4AF37]/15 text-[#DFCA9E] border border-[#D4AF37]/30 uppercase font-bold">

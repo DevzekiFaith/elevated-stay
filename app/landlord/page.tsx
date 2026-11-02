@@ -842,6 +842,9 @@ export default function LandlordDashboard() {
       {showEnrollModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
           <div className="relative w-full max-w-xl bg-[#111722] border border-[#D4AF37]/50 rounded-3xl p-6 sm:p-8 shadow-2xl text-left space-y-5 max-h-[90vh] overflow-y-auto">
+            <div className="mb-2">
+              <Logo size="sm" href="" />
+            </div>
             <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-[#D4AF37]/20 border border-[#D4AF37]/40 flex items-center justify-center text-[#D4AF37]">

@@ -6,6 +6,7 @@ import { Download, FileText, CheckCircle2, ShieldCheck, Printer, X, Award, Build
 import { formatNaira } from "@/lib/payment-split";
 import { MOCK_LANDLORD } from "@/lib/mock-data";
 import { Landlord } from "@/lib/types";
+import { Logo } from "./Logo";
 import { useToast } from "./ToastProvider";
 
 interface InstitutionalTaxModalProps {
@@ -45,18 +46,21 @@ export function InstitutionalTaxModal({ onClose, landlord = MOCK_LANDLORD }: Ins
         className="relative w-full max-w-2xl bg-[#0F141F] border border-[#D4AF37]/40 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 text-left max-h-[90vh] overflow-y-auto"
       >
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-white/[0.08]">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-2xl bg-[#D4AF37]/10 border border-[#D4AF37]/25 text-[#DFCA9E]">
-              <Award className="w-5 h-5 text-[#D4AF37]" />
-            </div>
-            <div>
-              <span className="text-[10px] font-mono uppercase tracking-widest text-[#D4AF37] font-bold">
-                FAMILY OFFICE AUDIT PROTOCOL
-              </span>
-              <h3 className="text-lg font-bold text-white tracking-tight">
-                Annual Asset Depreciation & Tax Audit Pack
-              </h3>
+        <div className="flex items-start justify-between pb-4 border-b border-white/[0.08]">
+          <div className="space-y-3">
+            <Logo size="sm" href="" />
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded-2xl bg-[#D4AF37]/10 border border-[#D4AF37]/25 text-[#DFCA9E]">
+                <Award className="w-5 h-5 text-[#D4AF37]" />
+              </div>
+              <div>
+                <span className="text-[10px] font-mono uppercase tracking-widest text-[#D4AF37] font-bold">
+                  FAMILY OFFICE AUDIT PROTOCOL
+                </span>
+                <h3 className="text-lg font-bold text-white tracking-tight">
+                  Annual Asset Depreciation & Tax Audit Pack
+                </h3>
+              </div>
             </div>
           </div>
           <button

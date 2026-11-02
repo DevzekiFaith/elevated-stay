@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { Logo } from "@/components/Logo";
 import {
   MOCK_UNITS,
   MOCK_COMPOUNDS,
@@ -764,6 +765,9 @@ export default function ResidentHub() {
               transition={{ duration: 0.2 }}
               className="relative w-full max-w-sm bg-[#0E131E] border border-[#D4AF37]/40 rounded-3xl p-6 sm:p-7 shadow-2xl text-center space-y-5"
             >
+              <div className="mb-2">
+                <Logo size="sm" href="" />
+              </div>
               {/* Header */}
               <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
                 <div className="flex items-center gap-2 text-left">
