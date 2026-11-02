@@ -14,6 +14,7 @@ export interface Compound {
   escrowAccountNumber: string;
   escrowBank: string;
   imageUrl: string;
+  images?: string[];
   quietHours: string;
 }
 
