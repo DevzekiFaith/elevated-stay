@@ -22,6 +22,7 @@ import { InstitutionalTaxModal } from "@/components/InstitutionalTaxModal";
 import { IoTTelemetryFeed } from "@/components/IoTTelemetryFeed";
 import { ChangePinModal } from "@/components/ChangePinModal";
 import { useToast } from "@/components/ToastProvider";
+import { getLiveCompounds } from "@/lib/compound-vault";
 import { Transaction, Landlord, Unit, MaintenanceTicket } from "@/lib/types";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -167,20 +168,24 @@ export default function LandlordDashboard() {
     });
   };
 
+  const liveCompounds = getLiveCompounds();
+
   const masterLandlord: Landlord = {
     id: "lld-master",
     name: "Executive Principal (Master Session)",
-    organizationName: "Diaspora Family Estate Trust",
+    organizationName: "Direct Institutional Asset Trust",
     clientType: "Residential Family Compound",
     email: "principal@stay.com.ng",
-    phone: "+234 (1) 298-4400",
-    subaccountCode: "ACCT_7k92m10la82",
-    bankName: "Guaranty Trust Bank (Private Wealth Desk)",
-    accountNumber: "0091823910",
+    phone: "+234 800 000 0000",
+    subaccountCode: liveCompounds[0]?.code ? `ACCT_${liveCompounds[0].code}` : "ACCT_DIRECT_DISBURSEMENT",
+    bankName: liveCompounds[0]?.escrowBank || "Settlement Bank on File",
+    accountNumber: liveCompounds[0]?.escrowAccountNumber || "0000000000",
     managementFeePercent: 7.5,
     totalAnnualYield: 0,
-    propertiesCount: 3,
-    primaryLocation: "Prime Residential Enclave, Lagos",
+    propertiesCount: liveCompounds.length,
+    primaryLocation: liveCompounds[0]
+      ? `${liveCompounds[0].name}, ${liveCompounds[0].city}`
+      : "Enrolled Compound Enclaves",
   };
 
   // Determine active landlord strictly by authenticated session
@@ -191,23 +196,23 @@ export default function LandlordDashboard() {
         realLandlords.find((l) => l.id === getActiveClientId()) ||
         null;
 
-  // Properties owned by this landlord or synthesized from registered estate
+  // Properties owned by this landlord or synthesized from real live enrolled compounds
   const ownedUnits: Unit[] = activeLandlord
-    ? [
-        {
-          id: `unt-live-${activeLandlord.id}`,
-          compoundId: "cmp-01",
-          unitNumber: `${(activeLandlord.primaryLocation || "Executive Residence").split(",")[0]} (Principal Wing)`,
-          type: "Grade-A Residential Sanctuary",
-          floor: "Penthouse & Private Grounds",
+    ? liveCompounds.length > 0
+      ? liveCompounds.map((c, idx) => ({
+          id: `unt-live-${activeLandlord.id}-${idx}`,
+          compoundId: c.id,
+          unitNumber: `${c.name} (Principal Enclave)`,
+          type: "Managed Residential Enclave",
+          floor: "Grounds & Residences",
           landlordId: activeLandlord.id,
           currentResidentId: "res-live",
           annualRent: 0,
           serviceCharge: 0,
           legalBrokerageFee: 0,
           status: "occupied",
-        },
-      ]
+        }))
+      : []
     : [];
 
   const ownedUnitIds = new Set(ownedUnits.map((u) => u.id));
@@ -577,11 +582,13 @@ export default function LandlordDashboard() {
                   </div>
                 </div>
                 <div className="text-2xl sm:text-3xl font-bold font-mono text-white tracking-tight">
-                  100%
+                  {ownedUnits.length > 0 ? "100%" : "0%"}
                 </div>
                 <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between text-[11px] font-mono text-neutral-400">
                   <span>{ownedUnits.length} Luxury Units Active</span>
-                  <span className="text-[#DFCA9E] font-semibold">Zero Vacancy</span>
+                  <span className="text-[#DFCA9E] font-semibold">
+                    {ownedUnits.length > 0 ? "Zero Vacancy" : "Awaiting Enrolled Units"}
+                  </span>
                 </div>
               </motion.div>
 
@@ -599,11 +606,11 @@ export default function LandlordDashboard() {
                   </div>
                 </div>
                 <div className="text-2xl sm:text-3xl font-bold font-mono text-[#DFCA9E] tracking-tight">
-                  118 Days
+                  {ownedUnits.length > 0 ? "365 Days" : "—"}
                 </div>
                 <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between text-[11px] font-mono text-neutral-400">
-                  <span>{ownedUnits[0]?.unitNumber || "Executive Suite"}</span>
-                  <span className="text-white font-mono">Q1 2027</span>
+                  <span>{ownedUnits[0]?.unitNumber || "No Active Units"}</span>
+                  <span className="text-white font-mono">{ownedUnits.length > 0 ? "Annual Horizon" : "Standby"}</span>
                 </div>
               </motion.div>
 
@@ -662,32 +669,42 @@ export default function LandlordDashboard() {
                 </div>
 
                 <div className="space-y-4">
-                  {ownedUnits.map((u) => (
-                    <div
-                      key={u.id}
-                      className="p-5 rounded-3xl bg-[#0D111A] border border-white/[0.08] hover:border-[#D4AF37]/40 transition space-y-3"
-                    >
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <div className="text-sm font-bold text-white font-sans">{u.unitNumber}</div>
-                          <div className="text-xs text-neutral-400">{u.type}</div>
-                        </div>
-                        <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold uppercase">
-                          {u.status}
-                        </span>
-                      </div>
-
-                      <div className="text-xs font-mono text-neutral-300 pt-2 border-t border-white/[0.06] flex items-center justify-between">
-                        <span className="text-neutral-400">Annual Base Rent:</span>
-                        <strong className="text-white font-bold">{formatNaira(u.annualRent)}</strong>
-                      </div>
-
-                      <div className="text-xs font-mono text-neutral-300 flex items-center justify-between">
-                        <span className="text-neutral-400">Service Escrow:</span>
-                        <span className="text-[#DFCA9E] font-medium">{formatNaira(u.serviceCharge)}</span>
-                      </div>
+                  {ownedUnits.length === 0 ? (
+                    <div className="p-8 rounded-3xl bg-[#0D111A] border border-white/[0.08] text-center space-y-2">
+                      <Building className="w-6 h-6 text-[#D4AF37] mx-auto opacity-70" />
+                      <div className="text-white font-bold text-xs">No Units Enrolled</div>
+                      <p className="text-[11px] text-neutral-400 font-mono">
+                        Enrolled compound properties will appear here upon onboarding in Operations.
+                      </p>
                     </div>
-                  ))}
+                  ) : (
+                    ownedUnits.map((u) => (
+                      <div
+                        key={u.id}
+                        className="p-5 rounded-3xl bg-[#0D111A] border border-white/[0.08] hover:border-[#D4AF37]/40 transition space-y-3"
+                      >
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <div className="text-sm font-bold text-white font-sans">{u.unitNumber}</div>
+                            <div className="text-xs text-neutral-400">{u.type}</div>
+                          </div>
+                          <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold uppercase">
+                            {u.status}
+                          </span>
+                        </div>
+
+                        <div className="text-xs font-mono text-neutral-300 pt-2 border-t border-white/[0.06] flex items-center justify-between">
+                          <span className="text-neutral-400">Annual Base Rent:</span>
+                          <strong className="text-white font-bold">{formatNaira(u.annualRent)}</strong>
+                        </div>
+
+                        <div className="text-xs font-mono text-neutral-300 flex items-center justify-between">
+                          <span className="text-neutral-400">Service Escrow:</span>
+                          <span className="text-[#DFCA9E] font-medium">{formatNaira(u.serviceCharge)}</span>
+                        </div>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
 

@@ -45,7 +45,9 @@ export function getClientVaults(): ClientVaultAccount[] {
         c.id !== "danb-02" &&
         c.id !== "alabi-03" &&
         c.id !== "ops-04" &&
-        c.id !== "ops-master"
+        c.id !== "ops-master" &&
+        c.id !== "lld-master" &&
+        c.id !== "res-master"
     );
   } catch {
     return [];
@@ -200,20 +202,21 @@ export function vaultToLandlord(v: ClientVaultAccount): Landlord {
 }
 
 export function vaultToResident(v: ClientVaultAccount): Resident {
+  const currentYear = new Date().getFullYear();
   return {
     id: v.id,
     name: v.name,
     email: v.email,
     phone: v.phone,
-    compoundId: "cmp-01",
-    unitId: "unt-01",
-    unitName: `${v.estate} · Executive Suite`,
-    leaseStartDate: "2026-03-01",
-    leaseEndDate: "2027-02-28",
+    compoundId: "cmp-live",
+    unitId: `unt-${v.id}`,
+    unitName: `${v.estate || "Executive Compound"} · Executive Suite`,
+    leaseStartDate: `${currentYear}-01-01`,
+    leaseEndDate: `${currentYear + 1}-01-01`,
     rentStatus: "paid",
     serviceChargeStatus: "paid",
     annexureSigned: true,
-    annexureSignedDate: "2026-02-20",
+    annexureSignedDate: v.issuedAt || "Verified on File",
   };
 }
 

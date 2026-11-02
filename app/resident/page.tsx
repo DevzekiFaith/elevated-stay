@@ -129,20 +129,25 @@ export default function ResidentHub() {
     });
   };
 
+  const liveCompounds = getLiveCompounds();
+  const currentYear = new Date().getFullYear();
+
   const masterResident: Resident = {
     id: "res-master",
     name: "Executive Resident Principal",
     email: "resident@stay.com.ng",
-    phone: "+234 (803) 900-1122",
-    compoundId: "cmp-01",
+    phone: "+234 800 000 0000",
+    compoundId: liveCompounds[0]?.id || "cmp-live",
     unitId: "unt-01",
-    unitName: "Executive Residence Penthouse",
-    leaseStartDate: "2026-03-01",
-    leaseEndDate: "2027-02-28",
+    unitName: liveCompounds[0]?.name
+      ? `${liveCompounds[0].name} · Executive Suite`
+      : "Executive Residence Penthouse",
+    leaseStartDate: `${currentYear}-01-01`,
+    leaseEndDate: `${currentYear + 1}-01-01`,
     rentStatus: "paid",
     serviceChargeStatus: "paid",
     annexureSigned: true,
-    annexureSignedDate: "2026-02-20",
+    annexureSignedDate: "Verified on File",
   };
 
   const activeResidentId = getActiveClientId();
@@ -166,22 +171,23 @@ export default function ResidentHub() {
     status: "occupied",
   };
 
-  const liveCompounds = getLiveCompounds();
   const fallbackCompound: Compound = {
     id: "cmp-live",
     name: resident?.unitName ? `${resident.unitName} Residence` : "Private Residence",
-    code: "ES-LIVE",
-    location: "Prime Residential Enclave",
-    neighborhood: "Diplomatic & Residential Zone",
-    city: "Lagos",
-    state: "Lagos State",
+    code: liveCompounds[0]?.code || "ES-LIVE",
+    location: liveCompounds[0]?.location || "Managed Residential Enclave",
+    neighborhood: liveCompounds[0]?.neighborhood || "Residential Zone",
+    city: liveCompounds[0]?.city || "Lagos",
+    state: liveCompounds[0]?.state || "Lagos State",
     totalUnits: 1,
     occupiedUnits: 1,
     escrowBalance: 0,
-    escrowBank: "Standard Chartered Bank Nigeria",
-    escrowAccountNumber: "0123984711",
+    escrowBank: liveCompounds[0]?.escrowBank || "Standard Chartered Bank Nigeria",
+    escrowAccountNumber: liveCompounds[0]?.escrowAccountNumber || "0000000000",
     quietHours: "22:00 – 07:00 WAT",
-    imageUrl: "/images/compounds/obsidian.jpg",
+    imageUrl:
+      liveCompounds[0]?.imageUrl ||
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
   };
   const compound: Compound = resident
     ? liveCompounds.find((c) => c.id === resident.compoundId) || fallbackCompound

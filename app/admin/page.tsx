@@ -96,7 +96,7 @@ export default function AdminOperations() {
   const [newClientLocation, setNewClientLocation] = useState("");
   const [newClientPhone, setNewClientPhone] = useState("+234 ");
   const [newClientEmail, setNewClientEmail] = useState("");
-  const [newClientMetric, setNewClientMetric] = useState("₦120,000,000 Annual Yield · 8 Units");
+  const [newClientMetric, setNewClientMetric] = useState("");
   const [newClientPasscode, setNewClientPasscode] = useState("");
   const [newClientPin, setNewClientPin] = useState("");
   const [newClientDelivery, setNewClientDelivery] = useState<
@@ -211,8 +211,8 @@ export default function AdminOperations() {
   }, [newClientName, newClientEstate, newClientRoleCategory, showEnrollModal]);
 
   const handleOpenEnrollModal = () => {
-    const defaultEstate = compounds[0]?.name || "Prime Residential Compound";
-    const defaultLocation = compounds[0]?.location || "Prime Residential Enclave, Lagos";
+    const defaultEstate = compounds[0]?.name || "";
+    const defaultLocation = compounds[0]?.location || "";
     setNewClientName("");
     setNewClientRoleCategory("landlord");
     setNewClientRoleTitle("Family Compound Principal");
@@ -220,7 +220,7 @@ export default function AdminOperations() {
     setNewClientLocation(defaultLocation);
     setNewClientPhone("+234 ");
     setNewClientEmail("");
-    setNewClientMetric("₦120,000,000 Annual Yield · 8 Units");
+    setNewClientMetric("");
     setNewClientPasscode(generateRandomPasskey("CLIENT"));
     setNewClientPin(generateRandomPin());
     setNewClientQuietHoursCode(generateAnnexureQuietHoursCode("", defaultEstate, "landlord"));
@@ -909,9 +909,9 @@ export default function AdminOperations() {
                       onClick={() =>
                         showToast({
                           title: `Escrow Audit: ${c.name}`,
-                          detail: `Standard Chartered / GTBank pool: ${formatNaira(
+                          detail: `${c.escrowBank} pool: ${formatNaira(
                             c.escrowBalance
-                          )} ringfenced for Daikin VRV & Perkins generators.`,
+                          )} ringfenced for power generation, reverse osmosis & structural security.`,
                           type: "finance",
                         })
                       }
@@ -1093,7 +1093,6 @@ export default function AdminOperations() {
               <tbody className="divide-y divide-white/[0.05]">
                 {clientVaults.map((client) => {
                   const isRevealed = !!showSecretsMap[client.id];
-                  const isMasterOps = client.id === "ops-master";
                   return (
                     <tr key={client.id} className="hover:bg-white/[0.02] transition">
                       <td className="py-4 px-4">
@@ -1603,10 +1602,10 @@ Your private vault access for ${whatsappDispatchClient.estate} has been authoriz
                       setNewClientRoleCategory(val);
                       if (val === "resident") {
                         setNewClientRoleTitle("Resident Tenant (Executive)");
-                        setNewClientMetric("Lease in Good Standing · Active");
+                        setNewClientMetric("");
                       } else {
                         setNewClientRoleTitle("Family Compound Principal");
-                        setNewClientMetric("₦120,000,000 Annual Yield · 8 Units");
+                        setNewClientMetric("");
                       }
                     }}
                     className="w-full px-3 py-2.5 bg-[#080B10] border border-white/15 rounded-xl text-white focus:outline-none focus:border-[#D4AF37] transition"
