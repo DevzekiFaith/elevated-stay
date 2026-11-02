@@ -76,9 +76,11 @@ export default function HomePage() {
               </span>
             </h1>
 
-            <p className="text-base sm:text-lg lg:text-xl text-neutral-300 max-w-3xl mx-auto leading-relaxed font-normal pt-2">
-              Engineered for high-value family compounds and institutional diaspora landlords.
-              Eliminating agency commingling, tenant friction, and structural degradation through software-enforced governance.
+            <p
+              suppressHydrationWarning
+              className="text-base sm:text-lg lg:text-xl text-neutral-300 max-w-3xl mx-auto leading-relaxed font-normal pt-2"
+            >
+              Engineered for high-value family compounds and institutional diaspora landlords. Eliminating agency commingling, tenant friction, and structural degradation through software-enforced governance.
             </p>
           </motion.div>
 
@@ -466,7 +468,7 @@ export default function HomePage() {
               <h2 className="text-2xl sm:text-4xl font-bold text-white mt-1.5">
                 Premier Residential Compounds Under Protection
               </h2>
-              <p className="text-xs sm:text-sm text-neutral-400 mt-1 max-w-2xl">
+              <p suppressHydrationWarning className="text-xs sm:text-sm text-neutral-400 mt-1 max-w-2xl">
                 Explore signature properties operating under dedicated facility escrows and software-enforced lifecycle governance.
               </p>
             </div>
@@ -552,7 +554,7 @@ export default function HomePage() {
                   <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug">
                     Why Preventative Lifecycle Audits Stop Capital Decay
                   </h3>
-                  <p className="text-xs text-neutral-300 leading-relaxed pt-1">
+                  <p suppressHydrationWarning className="text-xs text-neutral-300 leading-relaxed pt-1">
                     In prime residential compounds and commercial properties, major capital loss occurs when minor issues (VRV chiller coil acidity, borehole TDS membrane saturation, solar BMS balance delays) are ignored until total component failure.
                   </p>
                 </div>
@@ -674,7 +676,7 @@ export default function HomePage() {
           <h2 className="text-3xl sm:text-5xl font-bold text-white leading-tight">
             Commission Asset Lifecycle Protection for Your Residential Compound
           </h2>
-          <p className="text-xs sm:text-sm text-neutral-300 max-w-2xl mx-auto leading-relaxed">
+          <p suppressHydrationWarning className="text-xs sm:text-sm text-neutral-300 max-w-2xl mx-auto leading-relaxed">
             Whether you own a multi-family compound, an institutional commercial asset, or an extensive diaspora property portfolio, our asset architects are available for private consultations.
           </p>
 
