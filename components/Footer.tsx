@@ -68,27 +68,27 @@ export function Footer() {
             <ul className="space-y-2.5 text-xs text-neutral-400">
               <li className="flex items-start gap-1.5">
                 <MapPin className="w-3.5 h-3.5 text-[#C2A774] shrink-0 mt-0.5" />
-                <span>Lagos: Ikoyi, Banana Is. & Eko Atlantic</span>
+                <span>Lagos State Operations</span>
               </li>
               <li className="flex items-start gap-1.5">
                 <MapPin className="w-3.5 h-3.5 text-[#C2A774] shrink-0 mt-0.5" />
-                <span>Abuja FCT: Maitama & Asokoro</span>
+                <span>Abuja FCT Operations</span>
               </li>
               <li className="flex items-start gap-1.5">
                 <MapPin className="w-3.5 h-3.5 text-[#C2A774] shrink-0 mt-0.5" />
-                <span>Rivers: Port Harcourt (Old GRA)</span>
+                <span>Rivers State (Port Harcourt)</span>
               </li>
               <li className="flex items-start gap-1.5">
                 <MapPin className="w-3.5 h-3.5 text-[#C2A774] shrink-0 mt-0.5" />
-                <span>Enugu: Independence & Golf Estate</span>
+                <span>Enugu State Operations</span>
               </li>
               <li className="flex items-start gap-1.5">
                 <MapPin className="w-3.5 h-3.5 text-[#C2A774] shrink-0 mt-0.5" />
-                <span>Oyo: Ibadan (Iyaganku GRA)</span>
+                <span>Oyo State (Ibadan)</span>
               </li>
               <li className="flex items-start gap-1.5">
                 <MapPin className="w-3.5 h-3.5 text-[#C2A774] shrink-0 mt-0.5" />
-                <span>Liaison: Mayfair London & Dubai DIFC</span>
+                <span>International Diaspora Desks</span>
               </li>
             </ul>
           </div>

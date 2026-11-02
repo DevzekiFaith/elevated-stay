@@ -60,7 +60,7 @@ export function PrintableReceipt({ transaction, onClose }: PrintableReceiptProps
                 <span className="text-lg font-bold tracking-wider text-white">ELEVATION <span className="text-[#E2C792]">STAY</span></span>
               </div>
               <p className="text-xs text-[#DFCA9E] font-medium">Residential & Hospitality · stay.com.ng</p>
-              <p className="text-[11px] text-neutral-400 mt-1">4 Bourdillon Road, Old Ikoyi, Lagos</p>
+              <p className="text-[11px] text-neutral-400 mt-1">Private Client Asset Operations · Lagos & Multi-Territory</p>
             </div>
             <div className="text-right">
               <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">

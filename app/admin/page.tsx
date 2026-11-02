@@ -195,7 +195,7 @@ export default function AdminOperations() {
     setNewClientRoleCategory("landlord");
     setNewClientRoleTitle("Family Compound Principal");
     setNewClientEstate(compounds[0]?.name || "The Obsidian Courtyard");
-    setNewClientLocation(compounds[0]?.location || "4 Bourdillon Road, Old Ikoyi, Lagos");
+    setNewClientLocation(compounds[0]?.location || "Prime Residential Enclave, Lagos");
     setNewClientPhone("+234 ");
     setNewClientEmail("");
     setNewClientMetric("₦120,000,000 Annual Yield · 8 Units");
@@ -1408,7 +1408,7 @@ Your private vault access for ${whatsappDispatchClient.estate} has been authoriz
                     required
                     value={newClientLocation}
                     onChange={(e) => setNewClientLocation(e.target.value)}
-                    placeholder="e.g. 4 Bourdillon Road, Old Ikoyi, Lagos"
+                    placeholder="e.g. Prime Residential Enclave, Lagos"
                     className="w-full px-3 py-2.5 bg-[#080B10] border border-white/15 rounded-xl text-white focus:outline-none focus:border-[#D4AF37] transition"
                   />
                 </div>
@@ -1572,7 +1572,7 @@ Your private vault access for ${whatsappDispatchClient.estate} has been authoriz
                 <input
                   type="text"
                   required
-                  placeholder="e.g. 12 Alexander Avenue, Old Ikoyi"
+                  placeholder="e.g. Prime Residential Enclave"
                   value={newCompoundLocation}
                   onChange={(e) => setNewCompoundLocation(e.target.value)}
                   className="w-full px-3.5 py-2.5 bg-[#0C1017] border border-white/10 rounded-xl text-white placeholder-neutral-500 focus:outline-none focus:border-[#C2A774] transition"
@@ -1587,11 +1587,11 @@ Your private vault access for ${whatsappDispatchClient.estate} has been authoriz
                     onChange={(e) => setNewCompoundCity(e.target.value)}
                     className="w-full px-3 py-2 bg-[#0C1017] border border-white/10 rounded-xl text-white focus:outline-none focus:border-[#C2A774] transition"
                   >
-                    <option value="Lagos">Lagos State (Ikoyi / Banana Is.)</option>
-                    <option value="Abuja">Abuja FCT (Maitama / Asokoro)</option>
-                    <option value="Port Harcourt">Rivers State (Port Harcourt Old GRA)</option>
-                    <option value="Enugu">Enugu State (Independence Layout)</option>
-                    <option value="Ibadan">Oyo State (Iyaganku GRA / Bodija)</option>
+                    <option value="Lagos">Lagos State</option>
+                    <option value="Abuja">Abuja FCT</option>
+                    <option value="Port Harcourt">Rivers State (Port Harcourt)</option>
+                    <option value="Enugu">Enugu State</option>
+                    <option value="Ibadan">Oyo State (Ibadan)</option>
                   </select>
                 </div>
 

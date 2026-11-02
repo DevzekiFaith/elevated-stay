@@ -8,7 +8,6 @@ import { Logo } from "@/components/Logo";
 import { ArchitecturalSlides } from "@/components/ArchitecturalSlides";
 import { InspectionSlider } from "@/components/InspectionSlider";
 import { NocturnalPeaceRadar } from "@/components/NocturnalPeaceRadar";
-import { NationwideHubs } from "@/components/NationwideHubs";
 import { IoTTelemetryFeed } from "@/components/IoTTelemetryFeed";
 import { WhatsAppBotSimulator } from "@/components/WhatsAppBotSimulator";
 import { MOCK_MAINTENANCE_TICKETS, MOCK_LANDLORD, MOCK_UNITS, MOCK_COMPOUNDS } from "@/lib/mock-data";
@@ -479,13 +478,6 @@ export default function HomePage() {
           </div>
 
           <ArchitecturalSlides />
-        </div>
-      </section>
-
-      {/* 4B. Nationwide Multi-State Operations Hubs */}
-      <section className="py-20 sm:py-28 bg-[#07090E] border-b border-white/[0.08]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <NationwideHubs />
         </div>
       </section>
 

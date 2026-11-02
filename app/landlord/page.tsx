@@ -83,7 +83,7 @@ export default function LandlordDashboard() {
   const [newClientName, setNewClientName] = useState("");
   const [newClientRoleTitle, setNewClientRoleTitle] = useState("Family Compound Principal");
   const [newClientEstate, setNewClientEstate] = useState("Aura Residence & Terraces");
-  const [newClientLocation, setNewClientLocation] = useState("Zone E, Banana Island Foreshore, Lagos");
+  const [newClientLocation, setNewClientLocation] = useState("Waterfront Residential Enclave, Lagos");
   const [newClientPhone, setNewClientPhone] = useState("+234 ");
   const [newClientEmail, setNewClientEmail] = useState("");
   const [newClientBank, setNewClientBank] = useState("Guaranty Trust Bank (Private Wealth Desk)");
@@ -186,7 +186,7 @@ export default function LandlordDashboard() {
     managementFeePercent: 7.5,
     totalAnnualYield: 0,
     propertiesCount: 3,
-    primaryLocation: "The Obsidian Courtyard, Old Ikoyi",
+    primaryLocation: "The Obsidian Courtyard, Lagos",
   };
 
   // Determine active landlord strictly by authenticated session
@@ -264,7 +264,7 @@ export default function LandlordDashboard() {
     setNewClientName("");
     setNewClientRoleTitle("Family Compound Principal");
     setNewClientEstate("Aura Residence & Terraces");
-    setNewClientLocation("Zone E, Banana Island Foreshore, Lagos");
+    setNewClientLocation("Waterfront Residential Enclave, Lagos");
     setNewClientPhone("+234 ");
     setNewClientEmail("");
     setNewClientBank("Guaranty Trust Bank (Private Wealth Desk)");
@@ -915,7 +915,7 @@ export default function LandlordDashboard() {
                     required
                     value={newClientLocation}
                     onChange={(e) => setNewClientLocation(e.target.value)}
-                    placeholder="e.g. Zone E, Banana Island Foreshore, Lagos"
+                    placeholder="e.g. Waterfront Residential Enclave, Lagos"
                     className="w-full px-3 py-2.5 bg-[#080B10] border border-white/15 rounded-xl text-white focus:outline-none focus:border-[#D4AF37] transition"
                   />
                 </div>
