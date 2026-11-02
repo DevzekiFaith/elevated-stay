@@ -8,19 +8,13 @@ import { Logo } from "@/components/Logo";
 import { CompoundImageCarousel } from "@/components/CompoundImageCarousel";
 import { useToast } from "@/components/ToastProvider";
 import {
-  MOCK_UNITS,
-  MOCK_TRANSACTIONS,
-  MOCK_MAINTENANCE_TICKETS,
-  MOCK_LANDLORD,
-} from "@/lib/mock-data";
-import {
   getLiveCompounds,
   addLiveCompound,
   deleteLiveCompound,
   saveLiveCompounds,
   resetToCleanLiveRegistry,
 } from "@/lib/compound-vault";
-import { Compound, Unit, MaintenanceTicket } from "@/lib/types";
+import { Compound, MaintenanceTicket } from "@/lib/types";
 import { formatNaira } from "@/lib/payment-split";
 import {
   getClientVaults,
@@ -79,8 +73,7 @@ import {
 export default function AdminOperations() {
   const { showToast } = useToast();
   const [compounds, setCompounds] = useState<Compound[]>(() => getLiveCompounds());
-  const [units, setUnits] = useState<Unit[]>(MOCK_UNITS);
-  const [tickets, setTickets] = useState<MaintenanceTicket[]>(MOCK_MAINTENANCE_TICKETS);
+  const [tickets, setTickets] = useState<MaintenanceTicket[]>([]);
   const [selectedCity, setSelectedCity] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [copiedBankId, setCopiedBankId] = useState<string | null>(null);
@@ -410,10 +403,10 @@ export default function AdminOperations() {
     }
   };
 
-  // Calculate platform financials
-  const platformTotalGross = MOCK_TRANSACTIONS.reduce((a, b) => a + b.totalAmount, 0);
-  const platformLandlordDisbursements = MOCK_TRANSACTIONS.reduce((a, b) => a + b.landlordSplitAmount, 0);
-  const platformElevationRevenue = MOCK_TRANSACTIONS.reduce((a, b) => a + b.managementSplitAmount, 0);
+  // Calculate platform financials (Clean Live Registry)
+  const platformTotalGross = 0;
+  const platformLandlordDisbursements = 0;
+  const platformElevationRevenue = 0;
   const totalEscrowHeld = compounds.reduce((a, b) => a + b.escrowBalance, 0);
 
   const handleOnboardCompound = (e: React.FormEvent) => {
@@ -959,63 +952,77 @@ export default function AdminOperations() {
           </div>
 
           <div className="border border-white/[0.08] rounded-2xl bg-[#121722] overflow-hidden">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-[#151C28] text-neutral-400 border-b border-white/[0.08]">
-                <tr>
-                  <th className="py-3 px-4 font-medium">Ticket ID & Unit</th>
-                  <th className="py-3 px-4 font-medium">Category & Issue</th>
-                  <th className="py-3 px-4 font-medium">Priority</th>
-                  <th className="py-3 px-4 font-medium">Contractor / Status</th>
-                  <th className="py-3 px-4 font-medium text-right">Escrow Cost</th>
-                  <th className="py-3 px-4 font-medium text-center">Action</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-white/[0.06] text-neutral-300">
-                {tickets.map((t) => (
-                  <tr key={t.id} className="hover:bg-white/[0.02] transition">
-                    <td className="py-3.5 px-4 font-mono">
-                      <span className="text-white font-medium block">{t.id}</span>
-                      <span className="text-[11px] text-neutral-400">{t.unitName}</span>
-                    </td>
-                    <td className="py-3.5 px-4">
-                      <span className="font-semibold text-white block">{t.title}</span>
-                      <span className="text-[11px] text-neutral-400 line-clamp-1">{t.description}</span>
-                    </td>
-                    <td className="py-3.5 px-4">
-                      <span
-                        className={`px-2 py-0.5 rounded text-[10px] font-mono uppercase ${t.priority === "emergency"
-                          ? "bg-[#D4AF37]/20 text-[#DFCA9E] border border-[#D4AF37]/40 font-bold"
-                          : "bg-white/5 text-white/80 border border-white/10"
-                          }`}
-                      >
-                        {t.priority}
-                      </span>
-                    </td>
-                    <td className="py-3.5 px-4">
-                      <span className="text-white block font-medium">{t.contractorName || "Pending Assignment"}</span>
-                      <span className="text-[10px] font-mono text-[#DFCA9E] uppercase">{t.status.replace("_", " ")}</span>
-                    </td>
-                    <td className="py-3.5 px-4 text-right font-mono font-medium text-white">
-                      {t.invoiceAmount ? formatNaira(t.invoiceAmount) : "Pending Est."}
-                    </td>
-                    <td className="py-3.5 px-4 text-center">
-                      {t.status === "reported" ? (
-                        <button
-                          onClick={() => handleDispatchContractor(t.id)}
-                          className="py-1 px-3 rounded-lg bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0D12] font-bold text-[11px] shadow-sm transition"
-                        >
-                          Dispatch Contractor
-                        </button>
-                      ) : (
-                        <span className="text-[11px] text-[#DFCA9E] font-mono flex items-center justify-center gap-1">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-[#D4AF37]" /> Authorized
-                        </span>
-                      )}
-                    </td>
+            {tickets.length === 0 ? (
+              <div className="py-12 px-6 text-center space-y-3">
+                <div className="w-12 h-12 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center mx-auto text-neutral-400">
+                  <Wrench className="w-5 h-5 text-[#D4AF37]" />
+                </div>
+                <div className="space-y-1">
+                  <p className="text-sm font-semibold text-white">No Active Contractor Tickets</p>
+                  <p className="text-xs text-neutral-400 max-w-md mx-auto">
+                    All enrolled estate infrastructure is operating at 100% nominal telemetry. When maintenance or diagnostic tickets are logged by resident principals, instant dispatch controls will appear here.
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <table className="w-full text-left text-xs">
+                <thead className="bg-[#151C28] text-neutral-400 border-b border-white/[0.08]">
+                  <tr>
+                    <th className="py-3 px-4 font-medium">Ticket ID & Unit</th>
+                    <th className="py-3 px-4 font-medium">Category & Issue</th>
+                    <th className="py-3 px-4 font-medium">Priority</th>
+                    <th className="py-3 px-4 font-medium">Contractor / Status</th>
+                    <th className="py-3 px-4 font-medium text-right">Escrow Cost</th>
+                    <th className="py-3 px-4 font-medium text-center">Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-white/[0.06] text-neutral-300">
+                  {tickets.map((t) => (
+                    <tr key={t.id} className="hover:bg-white/[0.02] transition">
+                      <td className="py-3.5 px-4 font-mono">
+                        <span className="text-white font-medium block">{t.id}</span>
+                        <span className="text-[11px] text-neutral-400">{t.unitName}</span>
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <span className="font-semibold text-white block">{t.title}</span>
+                        <span className="text-[11px] text-neutral-400 line-clamp-1">{t.description}</span>
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <span
+                          className={`px-2 py-0.5 rounded text-[10px] font-mono uppercase ${t.priority === "emergency"
+                            ? "bg-[#D4AF37]/20 text-[#DFCA9E] border border-[#D4AF37]/40 font-bold"
+                            : "bg-white/5 text-white/80 border border-white/10"
+                            }`}
+                        >
+                          {t.priority}
+                        </span>
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <span className="text-white block font-medium">{t.contractorName || "Pending Assignment"}</span>
+                        <span className="text-[10px] font-mono text-[#DFCA9E] uppercase">{t.status.replace("_", " ")}</span>
+                      </td>
+                      <td className="py-3.5 px-4 text-right font-mono font-medium text-white">
+                        {t.invoiceAmount ? formatNaira(t.invoiceAmount) : "Pending Est."}
+                      </td>
+                      <td className="py-3.5 px-4 text-center">
+                        {t.status === "reported" ? (
+                          <button
+                            onClick={() => handleDispatchContractor(t.id)}
+                            className="py-1 px-3 rounded-lg bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0D12] font-bold text-[11px] shadow-sm transition"
+                          >
+                            Dispatch Contractor
+                          </button>
+                        ) : (
+                          <span className="text-[11px] text-[#DFCA9E] font-mono flex items-center justify-center gap-1">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-[#D4AF37]" /> Authorized
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </section>
 
@@ -1630,7 +1637,7 @@ Your private vault access for ${whatsappDispatchClient.estate} has been authoriz
                     required
                     value={newClientEstate}
                     onChange={(e) => setNewClientEstate(e.target.value)}
-                    placeholder="e.g. The Obsidian Courtyard"
+                    placeholder="e.g. Coral Shore Waterfront Residences"
                     className="w-full px-3 py-2.5 bg-[#080B10] border border-white/15 rounded-xl text-white focus:outline-none focus:border-[#D4AF37] transition"
                   />
                 </div>

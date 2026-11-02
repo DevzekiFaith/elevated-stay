@@ -10,7 +10,7 @@ import { InspectionSlider } from "@/components/InspectionSlider";
 import { NocturnalPeaceRadar } from "@/components/NocturnalPeaceRadar";
 import { IoTTelemetryFeed } from "@/components/IoTTelemetryFeed";
 import { WhatsAppBotSimulator } from "@/components/WhatsAppBotSimulator";
-import { MOCK_MAINTENANCE_TICKETS, MOCK_LANDLORD, MOCK_UNITS, MOCK_COMPOUNDS } from "@/lib/mock-data";
+import { MOCK_MAINTENANCE_TICKETS } from "@/lib/mock-data";
 import { formatNaira } from "@/lib/payment-split";
 import { motion, AnimatePresence } from "framer-motion";
 import {

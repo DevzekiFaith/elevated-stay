@@ -6,12 +6,6 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Logo } from "@/components/Logo";
 import {
-  MOCK_UNITS,
-  MOCK_COMPOUNDS,
-  MOCK_TRANSACTIONS,
-  MOCK_MAINTENANCE_TICKETS,
-} from "@/lib/mock-data";
-import {
   getClientVaults,
   addClientVaultInStorage,
   vaultToLandlord,
@@ -28,7 +22,7 @@ import { InstitutionalTaxModal } from "@/components/InstitutionalTaxModal";
 import { IoTTelemetryFeed } from "@/components/IoTTelemetryFeed";
 import { ChangePinModal } from "@/components/ChangePinModal";
 import { useToast } from "@/components/ToastProvider";
-import { Transaction, Landlord, Unit } from "@/lib/types";
+import { Transaction, Landlord, Unit, MaintenanceTicket } from "@/lib/types";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Building2,
@@ -82,8 +76,8 @@ export default function LandlordDashboard() {
   // New Landlord Principal Enrollment State
   const [newClientName, setNewClientName] = useState("");
   const [newClientRoleTitle, setNewClientRoleTitle] = useState("Family Compound Principal");
-  const [newClientEstate, setNewClientEstate] = useState("Aura Residence & Terraces");
-  const [newClientLocation, setNewClientLocation] = useState("Waterfront Residential Enclave, Lagos");
+  const [newClientEstate, setNewClientEstate] = useState("");
+  const [newClientLocation, setNewClientLocation] = useState("");
   const [newClientPhone, setNewClientPhone] = useState("+234 ");
   const [newClientEmail, setNewClientEmail] = useState("");
   const [newClientBank, setNewClientBank] = useState("Guaranty Trust Bank (Private Wealth Desk)");
@@ -186,7 +180,7 @@ export default function LandlordDashboard() {
     managementFeePercent: 7.5,
     totalAnnualYield: 0,
     propertiesCount: 3,
-    primaryLocation: "The Obsidian Courtyard, Lagos",
+    primaryLocation: "Prime Residential Enclave, Lagos",
   };
 
   // Determine active landlord strictly by authenticated session
@@ -197,55 +191,37 @@ export default function LandlordDashboard() {
         realLandlords.find((l) => l.id === getActiveClientId()) ||
         null;
 
-  // Filter properties owned by this landlord or synthesize from registered estate
-  const matchedUnits = activeLandlord
-    ? MOCK_UNITS.filter((u) => u.landlordId === activeLandlord.id)
+  // Properties owned by this landlord or synthesized from registered estate
+  const ownedUnits: Unit[] = activeLandlord
+    ? [
+        {
+          id: `unt-live-${activeLandlord.id}`,
+          compoundId: "cmp-01",
+          unitNumber: `${(activeLandlord.primaryLocation || "Executive Residence").split(",")[0]} (Principal Wing)`,
+          type: "Grade-A Residential Sanctuary",
+          floor: "Penthouse & Private Grounds",
+          landlordId: activeLandlord.id,
+          currentResidentId: "res-live",
+          annualRent: 0,
+          serviceCharge: 0,
+          legalBrokerageFee: 0,
+          status: "occupied",
+        },
+      ]
     : [];
-
-  const ownedUnits: Unit[] =
-    matchedUnits.length > 0
-      ? matchedUnits
-      : activeLandlord
-      ? [
-          {
-            id: `unt-live-${activeLandlord.id}`,
-            compoundId: "cmp-01",
-            unitNumber: `${(activeLandlord.primaryLocation || "Executive Residence").split(",")[0]} (Principal Wing)`,
-            type: "Grade-A Residential Sanctuary",
-            floor: "Penthouse & Private Grounds",
-            landlordId: activeLandlord.id,
-            currentResidentId: "res-live",
-            annualRent: 0,
-            serviceCharge: 0,
-            legalBrokerageFee: 0,
-            status: "occupied",
-          },
-        ]
-      : [];
 
   const ownedUnitIds = new Set(ownedUnits.map((u) => u.id));
 
   // Transactions belonging to this client's portfolio
-  const transactions = activeLandlord
-    ? MOCK_TRANSACTIONS.filter((t) =>
-        ownedUnitIds.has(t.unitId) && (selectedUnitId === "all" ? true : t.unitId === selectedUnitId)
-      )
-    : [];
+  const transactions: Transaction[] = [];
 
   // Total landlord net earnings
-  const totalNetPayouts = transactions.reduce((acc, curr) => acc + (curr.landlordSplitAmount || 0), 0);
-  const totalGrossRent = transactions.reduce(
-    (acc, curr) => (curr.type === "base_rent" ? acc + (curr.totalAmount || 0) : acc),
-    0
-  );
-  const totalEscrowDisbursed = transactions.reduce((acc, curr) => acc + (curr.escrowSplitAmount || 0), 0);
+  const totalNetPayouts = 0;
+  const totalGrossRent = 0;
+  const totalEscrowDisbursed = 0;
 
   // Maintenance tickets for landlord's properties
-  const maintenanceAudits = activeLandlord
-    ? MOCK_MAINTENANCE_TICKETS.filter((m) =>
-        ownedUnitIds.has(m.unitId) && (selectedUnitId === "all" ? true : m.unitId === selectedUnitId)
-      )
-    : [];
+  const maintenanceAudits: MaintenanceTicket[] = [];
 
   const handleSwitchClient = (newId: string) => {
     setActiveLandlordId(newId);
@@ -263,8 +239,8 @@ export default function LandlordDashboard() {
   const handleOpenEnrollModal = () => {
     setNewClientName("");
     setNewClientRoleTitle("Family Compound Principal");
-    setNewClientEstate("Aura Residence & Terraces");
-    setNewClientLocation("Waterfront Residential Enclave, Lagos");
+    setNewClientEstate("");
+    setNewClientLocation("");
     setNewClientPhone("+234 ");
     setNewClientEmail("");
     setNewClientBank("Guaranty Trust Bank (Private Wealth Desk)");
@@ -901,7 +877,7 @@ export default function LandlordDashboard() {
                     required
                     value={newClientEstate}
                     onChange={(e) => setNewClientEstate(e.target.value)}
-                    placeholder="e.g. Aura Residence & Terraces"
+                    placeholder="e.g. Coral Shore Waterfront Residences"
                     className="w-full px-3 py-2.5 bg-[#080B10] border border-white/15 rounded-xl text-white focus:outline-none focus:border-[#D4AF37] transition"
                   />
                 </div>
@@ -915,7 +891,7 @@ export default function LandlordDashboard() {
                     required
                     value={newClientLocation}
                     onChange={(e) => setNewClientLocation(e.target.value)}
-                    placeholder="e.g. Waterfront Residential Enclave, Lagos"
+                    placeholder="e.g. Prime Residential Enclave, Lagos"
                     className="w-full px-3 py-2.5 bg-[#080B10] border border-white/15 rounded-xl text-white focus:outline-none focus:border-[#D4AF37] transition"
                   />
                 </div>

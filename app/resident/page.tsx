@@ -5,13 +5,6 @@ import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Logo } from "@/components/Logo";
-import {
-  MOCK_UNITS,
-  MOCK_VISITOR_PASSES,
-  MOCK_MAINTENANCE_TICKETS,
-  MOCK_TRANSACTIONS,
-  MOCK_LANDLORD,
-} from "@/lib/mock-data";
 import { getLiveCompounds } from "@/lib/compound-vault";
 import {
   getClientVaults,
@@ -143,7 +136,7 @@ export default function ResidentHub() {
     phone: "+234 (803) 900-1122",
     compoundId: "cmp-01",
     unitId: "unt-01",
-    unitName: "The Obsidian Courtyard · Penthouse 4A",
+    unitName: "Executive Residence Penthouse",
     leaseStartDate: "2026-03-01",
     leaseEndDate: "2027-02-28",
     rentStatus: "paid",
@@ -159,21 +152,19 @@ export default function ResidentHub() {
       ? masterResident
       : realResidents.find((r) => r.id === activeResidentId) || null;
 
-  const unit: Unit = resident
-    ? MOCK_UNITS.find((u) => u.id === resident.unitId) || {
-        id: `unt-res-${resident.id}`,
-        compoundId: "cmp-01",
-        unitNumber: resident.unitName || "Executive Penthouse",
-        type: "4-Bedroom Prime Penthouse",
-        floor: "Private Keycard Elevator",
-        landlordId: "lld-live",
-        currentResidentId: resident.id,
-        annualRent: 0,
-        serviceCharge: 0,
-        legalBrokerageFee: 0,
-        status: "occupied",
-      }
-    : MOCK_UNITS[0];
+  const unit: Unit = {
+    id: resident ? `unt-res-${resident.id}` : "unt-standby",
+    compoundId: resident?.compoundId || "cmp-live",
+    unitNumber: resident?.unitName || "Executive Residence Penthouse",
+    type: "4-Bedroom Prime Penthouse",
+    floor: "Private Keycard Elevator",
+    landlordId: "lld-live",
+    currentResidentId: resident?.id || "res-standby",
+    annualRent: 0,
+    serviceCharge: 0,
+    legalBrokerageFee: 0,
+    status: "occupied",
+  };
 
   const liveCompounds = getLiveCompounds();
   const fallbackCompound: Compound = {
@@ -196,9 +187,9 @@ export default function ResidentHub() {
     ? liveCompounds.find((c) => c.id === resident.compoundId) || fallbackCompound
     : liveCompounds[0] || fallbackCompound;
 
-  const [visitorPasses, setVisitorPasses] = useState<VisitorPass[]>(MOCK_VISITOR_PASSES);
-  const [maintenanceTickets, setMaintenanceTickets] = useState<MaintenanceTicket[]>(MOCK_MAINTENANCE_TICKETS);
-  const [transactions, setTransactions] = useState<Transaction[]>(MOCK_TRANSACTIONS);
+  const [visitorPasses, setVisitorPasses] = useState<VisitorPass[]>([]);
+  const [maintenanceTickets, setMaintenanceTickets] = useState<MaintenanceTicket[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   // Modals state
   const { showToast } = useToast();
@@ -459,7 +450,7 @@ export default function ResidentHub() {
               exit={{ opacity: 0, height: 0 }}
               className="p-4 rounded-xl bg-[#080B10] border border-[#C2A774]/20 space-y-3 text-xs text-neutral-300"
             >
-              <h4 className="font-semibold text-white">Full Annexure Schedule A: The Obsidian Courtyard Rules</h4>
+              <h4 className="font-semibold text-white">Full Annexure Schedule A: {compound.name} Rules</h4>
               <p className="leading-relaxed text-[11px] text-neutral-400">
                 1. <strong>Parking Allocation:</strong> Each penthouse unit is assigned 3 designated subterranean parking bays. Visitor vehicles exceeding 24 hours require facility management written approval.
               </p>
@@ -503,7 +494,27 @@ export default function ResidentHub() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {visitorPasses.map((pass) => (
+            {visitorPasses.length === 0 ? (
+              <div className="col-span-full py-12 px-6 rounded-3xl bg-[#0B0F17] border border-white/[0.08] text-center space-y-3">
+                <div className="w-12 h-12 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center mx-auto text-neutral-400">
+                  <KeyRound className="w-5 h-5 text-[#D4AF37]" />
+                </div>
+                <div className="space-y-1">
+                  <p className="text-sm font-semibold text-white">No Active Gate Passes Issued</p>
+                  <p className="text-xs text-neutral-400 max-w-md mx-auto">
+                    Generate instant 6-digit access codes and optical QR passes for incoming guests, executive chauffeurs, or delivery couriers.
+                  </p>
+                </div>
+                <button
+                  onClick={() => setShowPassModal(true)}
+                  className="inline-flex items-center gap-2 py-2 px-4 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-white text-xs font-semibold border border-white/10 transition"
+                >
+                  <Plus className="w-4 h-4 text-[#D4AF37]" />
+                  <span>Generate First Gate Pass</span>
+                </button>
+              </div>
+            ) : (
+              visitorPasses.map((pass) => (
               <motion.div
                 key={pass.id}
                 layout
@@ -603,7 +614,7 @@ export default function ResidentHub() {
                   </button>
                 </div>
               </motion.div>
-            ))}
+            )))}
           </div>
         </section>
 
@@ -629,50 +640,64 @@ export default function ResidentHub() {
           </div>
 
           <div className="border border-white/[0.08] rounded-2xl bg-[#121722] overflow-hidden">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-[#151C28] text-neutral-400 border-b border-white/[0.08]">
-                <tr>
-                  <th className="py-3 px-4 font-medium">Reference Code</th>
-                  <th className="py-3 px-4 font-medium">Invoice Purpose</th>
-                  <th className="py-3 px-4 font-medium text-right">Settled Amount</th>
-                  <th className="py-3 px-4 font-medium">Gateway & Channel</th>
-                  <th className="py-3 px-4 font-medium">Payment Timestamp</th>
-                  <th className="py-3 px-4 font-medium text-center">Receipt</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-white/[0.06] text-neutral-300">
-                {transactions.map((tx) => (
-                  <tr key={tx.id} className="hover:bg-white/[0.02] transition">
-                    <td className="py-3.5 px-4 font-mono font-medium text-white">{tx.reference}</td>
-                    <td className="py-3.5 px-4">
-                      {tx.type === "base_rent" ? (
-                        <span className="font-medium text-white">Annual Base Rent (Gross)</span>
-                      ) : (
-                        <span className="font-medium text-[#DFCA9E]">Compound Service Charge (Escrow)</span>
-                      )}
-                    </td>
-                    <td className="py-3.5 px-4 text-right font-mono font-semibold text-[#DFCA9E]">
-                      {formatNaira(tx.totalAmount)}
-                    </td>
-                    <td className="py-3.5 px-4 text-neutral-400">
-                      Paystack Direct Wire (Automated Split)
-                    </td>
-                    <td className="py-3.5 px-4 text-neutral-400 text-[11px] font-mono">
-                      {tx.createdAt}
-                    </td>
-                    <td className="py-3.5 px-4 text-center">
-                      <button
-                        onClick={() => setSelectedReceiptTx(tx)}
-                        className="py-1 px-3 rounded-lg bg-white/[0.06] hover:bg-[#D4AF37]/20 text-[#DFCA9E] font-medium text-[11px] transition inline-flex items-center gap-1.5"
-                      >
-                        <FileText className="w-3 h-3 text-[#D4AF37]" />
-                        <span>PDF Receipt</span>
-                      </button>
-                    </td>
+            {transactions.length === 0 ? (
+              <div className="py-12 px-6 text-center space-y-3">
+                <div className="w-12 h-12 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center mx-auto text-neutral-400">
+                  <Receipt className="w-5 h-5 text-[#D4AF37]" />
+                </div>
+                <div className="space-y-1">
+                  <p className="text-sm font-semibold text-white">No Settled Invoices Yet</p>
+                  <p className="text-xs text-neutral-400 max-w-md mx-auto">
+                    When rent or facility escrow service charges are settled via Paystack or direct wire, cryptographically verified PDF receipts with QR validation will appear here.
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <table className="w-full text-left text-xs">
+                <thead className="bg-[#151C28] text-neutral-400 border-b border-white/[0.08]">
+                  <tr>
+                    <th className="py-3 px-4 font-medium">Reference Code</th>
+                    <th className="py-3 px-4 font-medium">Invoice Purpose</th>
+                    <th className="py-3 px-4 font-medium text-right">Settled Amount</th>
+                    <th className="py-3 px-4 font-medium">Gateway & Channel</th>
+                    <th className="py-3 px-4 font-medium">Payment Timestamp</th>
+                    <th className="py-3 px-4 font-medium text-center">Receipt</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-white/[0.06] text-neutral-300">
+                  {transactions.map((tx) => (
+                    <tr key={tx.id} className="hover:bg-white/[0.02] transition">
+                      <td className="py-3.5 px-4 font-mono font-medium text-white">{tx.reference}</td>
+                      <td className="py-3.5 px-4">
+                        {tx.type === "base_rent" ? (
+                          <span className="font-medium text-white">Annual Base Rent (Gross)</span>
+                        ) : (
+                          <span className="font-medium text-[#DFCA9E]">Compound Service Charge (Escrow)</span>
+                        )}
+                      </td>
+                      <td className="py-3.5 px-4 text-right font-mono font-semibold text-[#DFCA9E]">
+                        {formatNaira(tx.totalAmount)}
+                      </td>
+                      <td className="py-3.5 px-4 text-neutral-400">
+                        Paystack Direct Wire (Automated Split)
+                      </td>
+                      <td className="py-3.5 px-4 text-neutral-400 text-[11px] font-mono">
+                        {tx.createdAt}
+                      </td>
+                      <td className="py-3.5 px-4 text-center">
+                        <button
+                          onClick={() => setSelectedReceiptTx(tx)}
+                          className="py-1 px-3 rounded-lg bg-white/[0.06] hover:bg-[#D4AF37]/20 text-[#DFCA9E] font-medium text-[11px] transition inline-flex items-center gap-1.5"
+                        >
+                          <FileText className="w-3 h-3 text-[#D4AF37]" />
+                          <span>PDF Receipt</span>
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </section>
 
@@ -698,7 +723,27 @@ export default function ResidentHub() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {maintenanceTickets.map((ticket) => (
+            {maintenanceTickets.length === 0 ? (
+              <div className="col-span-full py-12 px-6 rounded-3xl bg-[#0B0F17] border border-white/[0.08] text-center space-y-3">
+                <div className="w-12 h-12 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center mx-auto text-neutral-400">
+                  <Wrench className="w-5 h-5 text-[#D4AF37]" />
+                </div>
+                <div className="space-y-1">
+                  <p className="text-sm font-semibold text-white">No Maintenance Tickets</p>
+                  <p className="text-xs text-neutral-400 max-w-md mx-auto">
+                    All compound utilities (generator, solar, borehole reverse osmosis) are functioning optimally. Report any maintenance needs with photo or video proof for prompt contractor dispatch.
+                  </p>
+                </div>
+                <button
+                  onClick={() => setShowTicketModal(true)}
+                  className="inline-flex items-center gap-2 py-2 px-4 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-white text-xs font-semibold border border-white/10 transition"
+                >
+                  <Plus className="w-4 h-4 text-[#D4AF37]" />
+                  <span>Report Maintenance Issue</span>
+                </button>
+              </div>
+            ) : (
+              maintenanceTickets.map((ticket) => (
               <div
                 key={ticket.id}
                 className="p-5 rounded-2xl bg-[#121722] border border-white/[0.08] hover:border-[#D4AF37]/40 transition space-y-3"
@@ -731,7 +776,7 @@ export default function ResidentHub() {
                   <span className="text-[#DFCA9E]">Escrow Paid</span>
                 </div>
               </div>
-            ))}
+            )))}
           </div>
         </section>
         </>
@@ -768,7 +813,7 @@ export default function ResidentHub() {
           compoundName={compound.name}
           baseRent={unit.annualRent}
           serviceCharge={unit.serviceCharge}
-          landlordSubaccount={MOCK_LANDLORD.subaccountCode}
+          landlordSubaccount={compound.escrowAccountNumber ? `ACCT_${compound.code}` : "ACCT_DIRECT_ESCROW"}
           compoundEscrowAccount={compound.escrowAccountNumber}
         />
       )}
