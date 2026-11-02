@@ -1,14 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { MapPin, Lock, ShieldCheck, Mail, ArrowUpRight } from "lucide-react";
+import { Lock, ShieldCheck, Mail, ArrowUpRight } from "lucide-react";
 import { Logo } from "./Logo";
 
 export function Footer() {
   return (
     <footer className="w-full border-t border-white/[0.08] bg-[#07090D] text-neutral-400 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12">
-        {/* Main Grid */}
+        {/* Main Grid: 3-column streamlined layout */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-12 pb-14 border-b border-white/[0.06]">
           {/* Brand Info (5 cols) */}
           <div className="md:col-span-5 space-y-5">
@@ -16,7 +16,7 @@ export function Footer() {
             <p className="text-xs sm:text-[13px] text-neutral-300 leading-relaxed max-w-md font-normal">
               The turnkey residential management and Asset Lifecycle Protection arm of{" "}
               <strong className="text-white font-medium">Elevation Studio</strong>. Dedicated to preserving capital value,
-              structural longevity, and tranquil communal peace across high-value family compounds.
+              structural longevity, and tranquil communal peace across high-value family compounds and commercial estates.
             </p>
 
             <div className="flex flex-wrap items-center gap-3 pt-1">
@@ -30,10 +30,10 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Quick Links / Portals (2 cols) */}
-          <div className="md:col-span-2 space-y-3">
+          {/* Quick Links / Portals (3 cols) */}
+          <div className="md:col-span-3 space-y-3">
             <h4 className="text-white font-semibold text-xs tracking-wider uppercase font-sans">
-              Portals
+              Protected Portals
             </h4>
             <ul className="space-y-2.5 text-xs">
               <li>
@@ -41,7 +41,7 @@ export function Footer() {
                   href="/landlord"
                   className="text-neutral-400 hover:text-[#DFCA9E] transition flex items-center gap-1 group py-0.5"
                 >
-                  <span>Landlord Oversight</span>
+                  <span>Landlord Oversight Ledger</span>
                   <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </Link>
               </li>
@@ -50,51 +50,24 @@ export function Footer() {
                   href="/resident"
                   className="text-neutral-400 hover:text-[#DFCA9E] transition flex items-center gap-1 group py-0.5"
                 >
-                  <span>Resident Hub</span>
+                  <span>Resident Concierge Hub</span>
                   <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </Link>
               </li>
               <li>
-                <span className="text-neutral-500 py-0.5 block">Annexure Regulations</span>
+                <Link
+                  href="/admin"
+                  className="text-neutral-400 hover:text-[#DFCA9E] transition flex items-center gap-1 group py-0.5"
+                >
+                  <span>Operations Desk Gate</span>
+                  <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </Link>
               </li>
             </ul>
           </div>
 
-          {/* Locations (2 cols) */}
-          <div className="md:col-span-2 space-y-3">
-            <h4 className="text-white font-semibold text-xs tracking-wider uppercase font-sans">
-              Operational Hubs
-            </h4>
-            <ul className="space-y-2.5 text-xs text-neutral-400">
-              <li className="flex items-start gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-[#C2A774] shrink-0 mt-0.5" />
-                <span>Lagos State Operations</span>
-              </li>
-              <li className="flex items-start gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-[#C2A774] shrink-0 mt-0.5" />
-                <span>Abuja FCT Operations</span>
-              </li>
-              <li className="flex items-start gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-[#C2A774] shrink-0 mt-0.5" />
-                <span>Rivers State (Port Harcourt)</span>
-              </li>
-              <li className="flex items-start gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-[#C2A774] shrink-0 mt-0.5" />
-                <span>Enugu State Operations</span>
-              </li>
-              <li className="flex items-start gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-[#C2A774] shrink-0 mt-0.5" />
-                <span>Oyo State (Ibadan)</span>
-              </li>
-              <li className="flex items-start gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-[#C2A774] shrink-0 mt-0.5" />
-                <span>International Diaspora Desks</span>
-              </li>
-            </ul>
-          </div>
-
-          {/* Private Client Confidentiality Protocol (3 cols) */}
-          <div className="md:col-span-3 space-y-3">
+          {/* Private Client Confidentiality Protocol (4 cols) */}
+          <div className="md:col-span-4 space-y-3">
             <h4 className="text-white font-semibold text-xs tracking-wider uppercase font-sans">
               Confidentiality Protocol
             </h4>
@@ -107,7 +80,7 @@ export function Footer() {
               </p>
               <div className="pt-1 flex items-center gap-1.5 text-[11px] text-neutral-300">
                 <Mail className="w-3 h-3 text-[#C2A774]" />
-                <span>concierge@stay.com.ng</span>
+                <a href="mailto:concierge@stay.com.ng" className="hover:text-[#DFCA9E] transition">concierge@stay.com.ng</a>
               </div>
             </div>
           </div>
@@ -125,7 +98,7 @@ export function Footer() {
           <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-[11px]">
             <span className="hover:text-white transition cursor-pointer">Terms of Asset Protection</span>
             <span className="hover:text-white transition cursor-pointer">Annexure Quiet Hours Code</span>
-            <span className="text-[#DFCA9E] font-mono">Lagos · Abuja · Port Harcourt · Enugu · Ibadan · London · Dubai</span>
+            <span className="text-[#DFCA9E] font-mono">Nationwide Asset Protection & Diaspora Client Desks</span>
           </div>
         </div>
       </div>
