@@ -109,7 +109,20 @@ export function Navbar() {
     const trimmed = directModalKey.trim().toUpperCase();
     if (!trimmed) return;
 
-    if (trimmed === "8820" || trimmed === "ELEVATE-MASTER-2025" || trimmed === "ADMIN") {
+    if (trimmed === "ADMIN") {
+      setShowLoginModal(false);
+      setDirectModalKey("");
+      setDirectAuthError(false);
+      showToast({
+        title: "Operations Clearance Verified",
+        detail: "Opening Studio Master Operations Desk.",
+        type: "security",
+      });
+      router.push("/admin");
+      return;
+    }
+
+    if (trimmed === "8820" || trimmed === "ELEVATE-MASTER-2025") {
       const dest = selectedVaultFilter === "resident" ? "/resident" : "/landlord";
       const masterId = selectedVaultFilter === "resident" ? "res-master" : "lld-master";
       setActiveClientId(masterId);
@@ -146,7 +159,7 @@ export function Navbar() {
       setDirectAuthError(true);
       showToast({
         title: "Passkey Authorization Failed",
-        detail: "Invalid Passkey or PIN. Studio master PIN: 8820.",
+        detail: "Invalid Passkey or PIN. Please enter authorized credentials.",
         type: "security",
       });
     }
@@ -466,7 +479,6 @@ export function Navbar() {
                         <Lock className="w-3.5 h-3.5 text-[#D4AF37]" />
                         <span>Direct {selectedVaultFilter === "resident" ? "Resident" : selectedVaultFilter === "landlord" ? "Landlord" : "Client"} Passkey or PIN</span>
                       </label>
-                      <span className="text-[10px] text-neutral-400 font-mono">Master PIN: 8820</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="relative flex-1">
@@ -499,27 +511,32 @@ export function Navbar() {
                     </div>
                     {directAuthError && (
                       <span className="text-red-400 text-[11px] font-mono block">
-                        Invalid credentials. Enter authorized passkey or studio master PIN (8820).
+                        Invalid credentials. Please enter authorized passkey or PIN.
                       </span>
                     )}
+
+                    <div className="pt-1 flex items-center justify-between text-[10px] font-mono text-neutral-500">
+                      <span>Zero Public Directory Protocol</span>
+                      <Link
+                        href="/admin"
+                        onClick={() => setShowLoginModal(false)}
+                        className="text-neutral-400 hover:text-[#DFCA9E] transition flex items-center gap-1"
+                        title="Studio Operations Desk"
+                      >
+                        <span>Operations Desk</span>
+                        <ArrowRight className="w-3 h-3" />
+                      </Link>
+                    </div>
                   </form>
 
                   {/* Animated Client Vault Cards Grid */}
                   {filteredVaults.length === 0 ? (
-                    <div className="p-8 text-center rounded-2xl bg-white/[0.02] border border-white/5 space-y-3">
-                      <UserCheck className="w-8 h-8 text-[#D4AF37] mx-auto opacity-70" />
-                      <h4 className="text-base font-bold text-white">No Live Clients Registered Yet</h4>
-                      <p className="text-xs text-neutral-400 max-w-md mx-auto">
-                        To go live, onboard your real family compound principals and institutional owners directly in the Admin Operations Desk.
+                    <div className="p-6 text-center rounded-2xl bg-white/[0.02] border border-white/5 space-y-2">
+                      <ShieldCheck className="w-6 h-6 text-[#D4AF37] mx-auto opacity-75" />
+                      <h4 className="text-sm font-bold text-white">Private Principal Access</h4>
+                      <p className="text-xs text-neutral-400 max-w-sm mx-auto leading-relaxed">
+                        Please enter your estate passkey or cryptographic 4-digit PIN above to unlock your portal.
                       </p>
-                      <Link
-                        href="/admin"
-                        onClick={() => setShowLoginModal(false)}
-                        className="inline-flex items-center gap-1.5 py-2 px-4 rounded-xl bg-[#D4AF37] text-black font-bold text-xs hover:bg-[#E5C158] transition"
-                      >
-                        <Plus className="w-3.5 h-3.5" />
-                        <span>Enroll Real Client in Admin</span>
-                      </Link>
                     </div>
                   ) : (
                     <motion.div
@@ -777,13 +794,6 @@ export function Navbar() {
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Link
-                    href="/admin"
-                    onClick={() => setShowLoginModal(false)}
-                    className="text-[11px] font-mono text-[#DFCA9E] hover:text-white underline transition"
-                  >
-                    Operations Desk →
-                  </Link>
                   <button
                     type="button"
                     onClick={() => {

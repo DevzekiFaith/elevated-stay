@@ -26,6 +26,7 @@ import { PrintableReceipt } from "@/components/PrintableReceipt";
 import { InspectionSlider } from "@/components/InspectionSlider";
 import { InstitutionalTaxModal } from "@/components/InstitutionalTaxModal";
 import { IoTTelemetryFeed } from "@/components/IoTTelemetryFeed";
+import { ChangePinModal } from "@/components/ChangePinModal";
 import { useToast } from "@/components/ToastProvider";
 import { Transaction, Landlord, Unit } from "@/lib/types";
 import { motion, AnimatePresence } from "framer-motion";
@@ -119,6 +120,7 @@ export default function LandlordDashboard() {
   const [gatePasscode, setGatePasscode] = useState("");
   const [showGateKeyText, setShowGateKeyText] = useState(false);
   const [gateAuthError, setGateAuthError] = useState(false);
+  const [showChangePinModal, setShowChangePinModal] = useState(false);
 
   const handleLandlordGateLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -155,7 +157,7 @@ export default function LandlordDashboard() {
       setGateAuthError(true);
       showToast({
         title: "Authorization Failed",
-        detail: "Invalid Landlord Passkey or PIN (Master PIN: 8820). Access denied.",
+        detail: "Invalid Landlord Passkey or PIN. Access denied.",
         type: "security",
       });
     }
@@ -389,33 +391,6 @@ export default function LandlordDashboard() {
                 </button>
               </form>
 
-              {landlordVaults.length === 0 ? (
-                <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5 text-[11px] font-mono text-neutral-400">
-                  <span>No client principal accounts on this device yet. Contact studio operations to receive your single-use activation folio.</span>
-                </div>
-              ) : (
-                <div className="space-y-2 pt-2 border-t border-white/[0.08]">
-                  <span className="text-[10px] font-mono text-neutral-400 uppercase tracking-wider block">
-                    Registered Family Compounds ({landlordVaults.length}):
-                  </span>
-                  <div className="flex flex-wrap gap-2">
-                    {landlordVaults.map((lv) => (
-                      <button
-                        key={lv.id}
-                        type="button"
-                        onClick={() => {
-                          setGatePasscode(lv.pinCode);
-                          setGateAuthError(false);
-                        }}
-                        className="py-1 px-2.5 rounded-lg bg-white/[0.04] hover:bg-[#D4AF37]/20 text-neutral-300 hover:text-[#DFCA9E] border border-white/10 text-[10px] font-mono transition"
-                      >
-                        {lv.name}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
               <div className="pt-2 border-t border-white/[0.08] flex items-center justify-between text-[11px] font-mono text-neutral-400">
                 <span>Elevated Stay Security Protocol</span>
                 <Link href="/" className="text-[#DFCA9E] hover:underline">
@@ -446,6 +421,14 @@ export default function LandlordDashboard() {
                 </div>
 
                 <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setShowChangePinModal(true)}
+                    className="px-3 py-1.5 rounded-xl text-xs font-mono font-bold bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 text-[#DFCA9E] border border-[#D4AF37]/30 transition-all flex items-center gap-1.5 shrink-0"
+                    title="Change Security PIN"
+                  >
+                    <Key className="w-3 h-3" />
+                    <span>Security PIN</span>
+                  </button>
                   <button
                     onClick={handleSignOut}
                     className="px-3 py-1.5 rounded-xl text-xs font-mono font-bold bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 transition-all flex items-center gap-1.5 shrink-0"
@@ -1056,6 +1039,16 @@ export default function LandlordDashboard() {
             </form>
           </div>
         </div>
+      )}
+
+      {activeLandlord && (
+        <ChangePinModal
+          isOpen={showChangePinModal}
+          onClose={() => setShowChangePinModal(false)}
+          clientId={activeLandlord.id}
+          clientName={activeLandlord.name}
+          role="Landlord Principal"
+        />
       )}
 
       <Footer />

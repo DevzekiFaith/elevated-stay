@@ -25,6 +25,7 @@ import { VisitorPassModal } from "@/components/VisitorPassModal";
 import { PaymentModal } from "@/components/PaymentModal";
 import { MaintenanceTicketModal } from "@/components/MaintenanceTicketModal";
 import { QRCodeView } from "@/components/QRCodeView";
+import { ChangePinModal } from "@/components/ChangePinModal";
 import { VisitorPass, MaintenanceTicket, Transaction, Resident, Unit, Compound } from "@/lib/types";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/components/ToastProvider";
@@ -83,6 +84,7 @@ export default function ResidentHub() {
   const [residentGateKey, setResidentGateKey] = useState("");
   const [showResidentKeyText, setShowResidentKeyText] = useState(false);
   const [residentGateError, setResidentGateError] = useState(false);
+  const [showChangePinModal, setShowChangePinModal] = useState(false);
 
   const handleResidentGateLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -117,7 +119,7 @@ export default function ResidentHub() {
       setResidentGateError(true);
       showToast({
         title: "Access Denied",
-        detail: "Invalid Resident Passkey or PIN (Master PIN: 8820). Suite clearance denied.",
+        detail: "Invalid Resident Passkey or PIN. Suite clearance denied.",
         type: "security",
       });
     }
@@ -288,33 +290,6 @@ export default function ResidentHub() {
                 </button>
               </form>
 
-              {residentVaults.length === 0 ? (
-                <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5 text-[11px] font-mono text-neutral-400">
-                  <span>No resident tenancies registered on this device yet. Please contact management for your access folio.</span>
-                </div>
-              ) : (
-                <div className="space-y-2 pt-2 border-t border-white/[0.08]">
-                  <span className="text-[10px] font-mono text-neutral-400 uppercase tracking-wider block">
-                    Registered Executive Suites ({residentVaults.length}):
-                  </span>
-                  <div className="flex flex-wrap gap-2">
-                    {residentVaults.map((rv) => (
-                      <button
-                        key={rv.id}
-                        type="button"
-                        onClick={() => {
-                          setResidentGateKey(rv.pinCode);
-                          setResidentGateError(false);
-                        }}
-                        className="py-1 px-2.5 rounded-lg bg-white/[0.04] hover:bg-[#D4AF37]/20 text-neutral-300 hover:text-[#DFCA9E] border border-white/10 text-[10px] font-mono transition"
-                      >
-                        {rv.name}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
               <div className="pt-2 border-t border-white/[0.08] flex items-center justify-between text-[11px] font-mono text-neutral-400">
                 <span>Elevated Stay Security Protocol</span>
                 <Link href="/" className="text-[#DFCA9E] hover:underline">
@@ -352,6 +327,15 @@ export default function ResidentHub() {
 
               {/* Quick Action Buttons (2-Color System) */}
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full md:w-auto">
+                <button
+                  onClick={() => setShowChangePinModal(true)}
+                  className="py-3 px-3.5 rounded-xl bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 text-[#DFCA9E] border border-[#D4AF37]/30 text-xs font-semibold flex items-center justify-center gap-2 transition active:scale-98"
+                  title="Change Security PIN"
+                >
+                  <KeyRound className="w-3.5 h-3.5 text-[#D4AF37]" />
+                  <span className="hidden sm:inline">Security PIN</span>
+                </button>
+
                 <button
                   onClick={handleSignOut}
                   className="py-3 px-3.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/25 text-xs font-semibold flex items-center justify-center gap-2 transition active:scale-98"
@@ -863,6 +847,16 @@ export default function ResidentHub() {
           </div>
         )}
       </AnimatePresence>
+
+      {resident && (
+        <ChangePinModal
+          isOpen={showChangePinModal}
+          onClose={() => setShowChangePinModal(false)}
+          clientId={resident.id}
+          clientName={resident.name}
+          role="Resident Suite"
+        />
+      )}
 
       <Footer />
     </div>

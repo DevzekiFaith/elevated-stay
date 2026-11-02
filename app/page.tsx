@@ -106,14 +106,6 @@ export default function HomePage() {
               <span>Resident Hub</span>
               <ChevronRight className="w-4 h-4 text-neutral-400" />
             </Link>
-
-            <Link
-              href="/admin"
-              className="w-full sm:w-auto px-5 py-3.5 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] text-neutral-300 font-medium text-xs sm:text-sm transition-all flex items-center justify-center gap-2 border border-white/5"
-            >
-              <Layers className="w-4 h-4 text-[#D4AF37]" />
-              <span>Master Ops</span>
-            </Link>
           </motion.div>
 
           {/* Architectural Metrics Bar */}
@@ -368,13 +360,10 @@ export default function HomePage() {
                       </p>
                     </div>
 
-                    <Link
-                      href="/admin"
-                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#D4AF37] text-[#0A0D12] text-xs font-semibold hover:bg-[#F5E6B8] transition self-start sm:self-auto"
-                    >
-                      <span>Open Master Ops</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </Link>
+                    <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/[0.04] border border-white/10 text-neutral-400 text-xs font-mono self-start sm:self-auto">
+                      <Lock className="w-3.5 h-3.5 text-[#D4AF37]" />
+                      <span>Restricted Operations Directorate</span>
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

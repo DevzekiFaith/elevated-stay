@@ -55,15 +55,6 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/admin"
-                  className="text-neutral-400 hover:text-[#DFCA9E] transition flex items-center gap-1 group py-0.5"
-                >
-                  <span>Master Ops</span>
-                  <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </Link>
-              </li>
-              <li>
                 <span className="text-neutral-500 py-0.5 block">Annexure Regulations</span>
               </li>
             </ul>
@@ -125,7 +116,11 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-400">
           <div suppressHydrationWarning className="text-[11px]">
-            © {new Date().getFullYear()} Elevated Stay (www.stay.com.ng). A division of Elevation Studio. All rights reserved.
+            © {new Date().getFullYear()} Elevated Stay (www.stay.com.ng). A division of{" "}
+            <Link href="/admin" className="hover:text-[#DFCA9E] transition" title="Master Operations Desk">
+              Elevation Studio
+            </Link>
+            . All rights reserved.
           </div>
           <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-[11px]">
             <span className="hover:text-white transition cursor-pointer">Terms of Asset Protection</span>
