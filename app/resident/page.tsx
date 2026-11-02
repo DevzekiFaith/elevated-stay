@@ -7,12 +7,12 @@ import { Footer } from "@/components/Footer";
 import { Logo } from "@/components/Logo";
 import {
   MOCK_UNITS,
-  MOCK_COMPOUNDS,
   MOCK_VISITOR_PASSES,
   MOCK_MAINTENANCE_TICKETS,
   MOCK_TRANSACTIONS,
   MOCK_LANDLORD,
 } from "@/lib/mock-data";
+import { getLiveCompounds } from "@/lib/compound-vault";
 import {
   getClientVaults,
   vaultToResident,
@@ -173,9 +173,10 @@ export default function ResidentHub() {
       }
     : MOCK_UNITS[0];
 
+  const liveCompounds = getLiveCompounds();
   const compound: Compound = resident
-    ? MOCK_COMPOUNDS.find((c) => c.id === resident.compoundId) || MOCK_COMPOUNDS[0]
-    : MOCK_COMPOUNDS[0];
+    ? liveCompounds.find((c) => c.id === resident.compoundId) || liveCompounds[0]
+    : liveCompounds[0];
 
   const [visitorPasses, setVisitorPasses] = useState<VisitorPass[]>(MOCK_VISITOR_PASSES);
   const [maintenanceTickets, setMaintenanceTickets] = useState<MaintenanceTicket[]>(MOCK_MAINTENANCE_TICKETS);

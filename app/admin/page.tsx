@@ -13,6 +13,12 @@ import {
   MOCK_MAINTENANCE_TICKETS,
   MOCK_LANDLORD,
 } from "@/lib/mock-data";
+import {
+  getLiveCompounds,
+  addLiveCompound,
+  deleteLiveCompound,
+  saveLiveCompounds,
+} from "@/lib/compound-vault";
 import { Compound, Unit, MaintenanceTicket } from "@/lib/types";
 import { formatNaira } from "@/lib/payment-split";
 import {
@@ -67,7 +73,7 @@ import {
 
 export default function AdminOperations() {
   const { showToast } = useToast();
-  const [compounds, setCompounds] = useState<Compound[]>(MOCK_COMPOUNDS);
+  const [compounds, setCompounds] = useState<Compound[]>(() => getLiveCompounds());
   const [units, setUnits] = useState<Unit[]>(MOCK_UNITS);
   const [tickets, setTickets] = useState<MaintenanceTicket[]>(MOCK_MAINTENANCE_TICKETS);
   const [selectedCity, setSelectedCity] = useState<string>("all");
@@ -110,8 +116,15 @@ export default function AdminOperations() {
     const syncAdmin = () => {
       setIsAdminAuthed(isAdminAuthenticated());
     };
+    const syncCompounds = () => {
+      setCompounds(getLiveCompounds());
+    };
     window.addEventListener("elevation_admin_auth_changed", syncAdmin);
-    return () => window.removeEventListener("elevation_admin_auth_changed", syncAdmin);
+    window.addEventListener("elevation_compounds_updated", syncCompounds);
+    return () => {
+      window.removeEventListener("elevation_admin_auth_changed", syncAdmin);
+      window.removeEventListener("elevation_compounds_updated", syncCompounds);
+    };
   }, []);
 
   const handleAdminLogin = (e: React.FormEvent) => {
@@ -284,7 +297,8 @@ export default function AdminOperations() {
   const [newCompoundName, setNewCompoundName] = useState("");
   const [newCompoundLocation, setNewCompoundLocation] = useState("");
   const [newCompoundCity, setNewCompoundCity] = useState<string>("Lagos");
-  const [newCompoundEscrowBank, setNewCompoundEscrowBank] = useState("Guaranty Trust Bank");
+  const [newCompoundEscrowBank, setNewCompoundEscrowBank] = useState("Guaranty Trust Bank (Private Banking)");
+  const [newCompoundEscrowAccount, setNewCompoundEscrowAccount] = useState("");
   const [newUnitsCount, setNewUnitsCount] = useState("8");
 
   // Calculate platform financials
@@ -308,31 +322,66 @@ export default function AdminOperations() {
 
     const code = newCompoundName.slice(0, 3).toUpperCase() + "-" + newCompoundCity.slice(0, 3).toUpperCase();
     const newCmp: Compound = {
-      id: `cmp-${Date.now()}`,
-      name: newCompoundName,
+      id: `cmp-live-${Date.now()}`,
+      name: newCompoundName.trim(),
       code,
-      location: newCompoundLocation,
+      location: newCompoundLocation.trim(),
       neighborhood: newCompoundLocation.split(",")[0] || "Prime Area",
       city: newCompoundCity,
       state: compoundState,
-      totalUnits: parseInt(newUnitsCount),
+      totalUnits: parseInt(newUnitsCount) || 8,
       occupiedUnits: 0,
       escrowBalance: 0,
-      escrowAccountNumber: `019283${Math.floor(1000 + Math.random() * 9000)}`,
+      escrowAccountNumber:
+        newCompoundEscrowAccount.trim() || `019283${Math.floor(1000 + Math.random() * 9000)}`,
       escrowBank: newCompoundEscrowBank,
       imageUrl: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
       quietHours: "22:00 – 07:00 WAT",
     };
 
-    setCompounds([...compounds, newCmp]);
+    const updated = addLiveCompound(newCmp);
+    setCompounds(updated);
     setShowOnboardingModal(false);
     setNewCompoundName("");
     setNewCompoundLocation("");
+    setNewCompoundEscrowAccount("");
 
     showToast({
-      title: "Compound Cluster Onboarded",
-      detail: `${newCmp.name} (${newCmp.city}, ${newCmp.state} State) activated on multi-tenant router.`,
+      title: "Live Compound Activated",
+      detail: `${newCmp.name} (${newCmp.city}) onboarded to live facility escrow registry.`,
       type: "security",
+    });
+  };
+
+  const handleDeleteCompound = (compoundId: string) => {
+    const updated = deleteLiveCompound(compoundId);
+    setCompounds(updated);
+    showToast({
+      title: "Estate Deregistered",
+      detail: "Compound has been removed from active management.",
+      type: "info",
+    });
+  };
+
+  const handleClearDemoCompounds = () => {
+    if (confirm("Purge demo estates? You can onboard your real live estates anytime.")) {
+      const empty = saveLiveCompounds([]);
+      setCompounds(empty);
+      showToast({
+        title: "Demo Estates Purged",
+        detail: "Live registry is clean. Onboard your real family compounds.",
+        type: "info",
+      });
+    }
+  };
+
+  const handleResetDemoCompounds = () => {
+    const reset = saveLiveCompounds(MOCK_COMPOUNDS);
+    setCompounds(reset);
+    showToast({
+      title: "Estates Restored",
+      detail: "Standard estate templates restored.",
+      type: "info",
     });
   };
 
@@ -556,6 +605,26 @@ export default function AdminOperations() {
                 <Plus className="w-3.5 h-3.5 text-[#0A0D12]" />
                 <span>Onboard Estate</span>
               </button>
+
+              {compounds.length > 0 ? (
+                <button
+                  onClick={handleClearDemoCompounds}
+                  className="py-2 px-3 rounded-xl bg-white/[0.04] hover:bg-red-500/10 text-neutral-400 hover:text-red-400 border border-white/10 text-xs font-mono transition flex items-center gap-1.5 whitespace-nowrap"
+                  title="Purge demo compound cards to run on 100% live estates only"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Purge Demos</span>
+                </button>
+              ) : (
+                <button
+                  onClick={handleResetDemoCompounds}
+                  className="py-2 px-3 rounded-xl bg-white/[0.04] hover:bg-[#D4AF37]/15 text-neutral-400 hover:text-[#DFCA9E] border border-white/10 text-xs font-mono transition flex items-center gap-1.5 whitespace-nowrap"
+                  title="Restore standard demo estate templates"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Restore Templates</span>
+                </button>
+              )}
             </div>
           </div>
 
@@ -606,13 +675,22 @@ export default function AdminOperations() {
                   />
 
                   {/* Top-left code and city pills */}
-                  <div className="absolute top-3 inset-x-3 flex items-center justify-between pointer-events-none">
+                  <div className="absolute top-3 inset-x-3 flex items-center justify-between">
                     <span className="px-2.5 py-1 rounded-lg bg-black/75 backdrop-blur-md text-[10px] font-mono font-bold text-[#DFCA9E] border border-[#D4AF37]/35 shadow-md">
                       {c.code}
                     </span>
-                    <span className="px-2.5 py-1 rounded-lg bg-black/75 backdrop-blur-md text-[10px] font-mono text-white/90 border border-white/15">
-                      {c.city} · {c.neighborhood}
-                    </span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="px-2.5 py-1 rounded-lg bg-black/75 backdrop-blur-md text-[10px] font-mono text-white/90 border border-white/15">
+                        {c.city}
+                      </span>
+                      <button
+                        onClick={() => handleDeleteCompound(c.id)}
+                        className="p-1 rounded-lg bg-black/75 hover:bg-red-500/25 text-neutral-400 hover:text-red-400 border border-white/15 transition backdrop-blur-md cursor-pointer"
+                        title="Deregister this estate"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </div>
 
                   {/* Bottom occupancy status strip */}
@@ -1619,6 +1697,20 @@ Your private vault access for ${whatsappDispatchClient.estate} has been authoriz
                   <option value="Guaranty Trust Bank (Private Banking)">Guaranty Trust Bank (Private Banking)</option>
                   <option value="Zenith Bank (Prestige)">Zenith Bank (Prestige)</option>
                 </select>
+              </div>
+
+              <div>
+                <label className="block text-neutral-300 font-medium mb-1">
+                  Dedicated Escrow NUBAN Account (Optional)
+                </label>
+                <input
+                  type="text"
+                  maxLength={10}
+                  placeholder="e.g. 0123984711 (leave blank to auto-generate)"
+                  value={newCompoundEscrowAccount}
+                  onChange={(e) => setNewCompoundEscrowAccount(e.target.value)}
+                  className="w-full px-3.5 py-2.5 bg-[#0C1017] border border-white/10 rounded-xl text-white placeholder-neutral-500 focus:outline-none focus:border-[#C2A774] transition font-mono"
+                />
               </div>
 
               <div className="p-3 rounded-xl bg-[#090C12] border border-white/[0.06] text-[11px] text-neutral-400">
