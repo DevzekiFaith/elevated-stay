@@ -174,9 +174,25 @@ export default function ResidentHub() {
     : MOCK_UNITS[0];
 
   const liveCompounds = getLiveCompounds();
+  const fallbackCompound: Compound = {
+    id: "cmp-live",
+    name: resident?.unitName ? `${resident.unitName} Residence` : "Private Residence",
+    code: "ES-LIVE",
+    location: "Prime Residential Enclave",
+    neighborhood: "Diplomatic & Residential Zone",
+    city: "Lagos",
+    state: "Lagos State",
+    totalUnits: 1,
+    occupiedUnits: 1,
+    escrowBalance: 0,
+    escrowBank: "Standard Chartered Bank Nigeria",
+    escrowAccountNumber: "0123984711",
+    quietHours: "22:00 – 07:00 WAT",
+    imageUrl: "/images/compounds/obsidian.jpg",
+  };
   const compound: Compound = resident
-    ? liveCompounds.find((c) => c.id === resident.compoundId) || liveCompounds[0]
-    : liveCompounds[0];
+    ? liveCompounds.find((c) => c.id === resident.compoundId) || fallbackCompound
+    : liveCompounds[0] || fallbackCompound;
 
   const [visitorPasses, setVisitorPasses] = useState<VisitorPass[]>(MOCK_VISITOR_PASSES);
   const [maintenanceTickets, setMaintenanceTickets] = useState<MaintenanceTicket[]>(MOCK_MAINTENANCE_TICKETS);

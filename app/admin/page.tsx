@@ -7,7 +7,6 @@ import { Footer } from "@/components/Footer";
 import { Logo } from "@/components/Logo";
 import { useToast } from "@/components/ToastProvider";
 import {
-  MOCK_COMPOUNDS,
   MOCK_UNITS,
   MOCK_TRANSACTIONS,
   MOCK_MAINTENANCE_TICKETS,
@@ -18,6 +17,7 @@ import {
   addLiveCompound,
   deleteLiveCompound,
   saveLiveCompounds,
+  resetToCleanLiveRegistry,
 } from "@/lib/compound-vault";
 import { Compound, Unit, MaintenanceTicket } from "@/lib/types";
 import { formatNaira } from "@/lib/payment-split";
@@ -68,7 +68,6 @@ import {
   Trash2,
   UserPlus,
   Power,
-  RotateCcw,
 } from "lucide-react";
 
 export default function AdminOperations() {
@@ -364,25 +363,15 @@ export default function AdminOperations() {
   };
 
   const handleClearDemoCompounds = () => {
-    if (confirm("Purge demo estates? You can onboard your real live estates anytime.")) {
-      const empty = saveLiveCompounds([]);
+    if (confirm("Clear all registered compound assets? You can onboard new live estates anytime.")) {
+      const empty = resetToCleanLiveRegistry();
       setCompounds(empty);
       showToast({
-        title: "Demo Estates Purged",
-        detail: "Live registry is clean. Onboard your real family compounds.",
+        title: "Compound Registry Cleared",
+        detail: "Live registry is clean. Ready for live estate onboarding.",
         type: "info",
       });
     }
-  };
-
-  const handleResetDemoCompounds = () => {
-    const reset = saveLiveCompounds(MOCK_COMPOUNDS);
-    setCompounds(reset);
-    showToast({
-      title: "Estates Restored",
-      detail: "Standard estate templates restored.",
-      type: "info",
-    });
   };
 
   const handleDispatchContractor = (ticketId: string) => {
@@ -570,10 +559,10 @@ export default function AdminOperations() {
               <div className="flex items-center gap-2">
                 <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono tracking-wider uppercase font-semibold bg-[#D4AF37]/15 text-[#DFCA9E] border border-[#D4AF37]/30 flex items-center gap-1.5 shadow-sm">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-pulse" />
-                  MULTI-STATE COMPOUND CLUSTERS
+                  LIVE COMPOUND ASSETS
                 </span>
                 <span className="text-xs text-neutral-400 font-mono hidden sm:inline">
-                  {compounds.length} Active Estates Enrolled
+                  {compounds.length} {compounds.length === 1 ? "Active Estate" : "Active Estates"} Enrolled
                 </span>
               </div>
               <h2 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2 tracking-tight">
@@ -585,18 +574,20 @@ export default function AdminOperations() {
               </p>
             </div>
 
-            {/* Controls: Search, City Filter & Add Button */}
+            {/* Controls: Search & Onboard Button */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
-              <div className="relative">
-                <Search className="w-3.5 h-3.5 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                <input
-                  type="text"
-                  placeholder="Search estates, cities..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-8 pr-3 py-2 text-xs rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-neutral-500 focus:outline-none focus:border-[#D4AF37] w-full sm:w-56 font-mono"
-                />
-              </div>
+              {compounds.length > 0 && (
+                <div className="relative">
+                  <Search className="w-3.5 h-3.5 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    placeholder="Search estates, cities..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-8 pr-3 py-2 text-xs rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-neutral-500 focus:outline-none focus:border-[#D4AF37] w-full sm:w-56 font-mono"
+                  />
+                </div>
+              )}
 
               <button
                 onClick={() => setShowOnboardingModal(true)}
@@ -606,61 +597,100 @@ export default function AdminOperations() {
                 <span>Onboard Estate</span>
               </button>
 
-              {compounds.length > 0 ? (
+              {compounds.length > 0 && (
                 <button
                   onClick={handleClearDemoCompounds}
                   className="py-2 px-3 rounded-xl bg-white/[0.04] hover:bg-red-500/10 text-neutral-400 hover:text-red-400 border border-white/10 text-xs font-mono transition flex items-center gap-1.5 whitespace-nowrap"
-                  title="Purge demo compound cards to run on 100% live estates only"
+                  title="Clear registered compounds to reset registry"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Purge Demos</span>
-                </button>
-              ) : (
-                <button
-                  onClick={handleResetDemoCompounds}
-                  className="py-2 px-3 rounded-xl bg-white/[0.04] hover:bg-[#D4AF37]/15 text-neutral-400 hover:text-[#DFCA9E] border border-white/10 text-xs font-mono transition flex items-center gap-1.5 whitespace-nowrap"
-                  title="Restore standard demo estate templates"
-                >
-                  <RotateCcw className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Restore Templates</span>
+                  <span className="hidden sm:inline">Clear Registry</span>
                 </button>
               )}
             </div>
           </div>
 
-          {/* Regional Hub Filter Tabs */}
-          <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-1 text-xs">
-            {["all", "Lagos", "Abuja", "Port Harcourt", "Enugu", "Ibadan"].map((city) => {
-              const count =
-                city === "all"
-                  ? compounds.length
-                  : compounds.filter((c) => c.city.toLowerCase() === city.toLowerCase()).length;
-              const isSelected = selectedCity.toLowerCase() === city.toLowerCase();
+          {/* Regional Hub Filter Tabs - rendered only if compounds exist */}
+          {compounds.length > 0 && (
+            <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-1 text-xs">
+              {["all", ...Array.from(new Set(compounds.map((c) => c.city)))].map((city) => {
+                const count =
+                  city === "all"
+                    ? compounds.length
+                    : compounds.filter((c) => c.city.toLowerCase() === city.toLowerCase()).length;
+                const isSelected = selectedCity.toLowerCase() === city.toLowerCase();
 
-              return (
-                <button
-                  key={city}
-                  onClick={() => setSelectedCity(city)}
-                  className={`py-2 px-3.5 rounded-xl font-mono text-xs font-bold transition whitespace-nowrap flex items-center gap-2 border ${isSelected
-                    ? "bg-[#D4AF37] text-[#0A0D12] border-[#D4AF37] shadow-sm"
-                    : "bg-slate-100 dark:bg-white/[0.08] hover:bg-slate-200 dark:hover:bg-white/[0.14] text-[#0F172A] dark:text-white border-slate-300 dark:border-white/15"
+                return (
+                  <button
+                    key={city}
+                    onClick={() => setSelectedCity(city)}
+                    className={`py-2 px-3.5 rounded-xl font-mono text-xs font-bold transition whitespace-nowrap flex items-center gap-2 border ${
+                      isSelected
+                        ? "bg-[#D4AF37] text-[#0A0D12] border-[#D4AF37] shadow-sm"
+                        : "bg-slate-100 dark:bg-white/[0.08] hover:bg-slate-200 dark:hover:bg-white/[0.14] text-[#0F172A] dark:text-white border-slate-300 dark:border-white/15"
                     }`}
-                >
-                  <span>{city === "all" ? "All Locations" : city}</span>
-                  <span
-                    className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${isSelected ? "bg-black/20 text-[#0A0D12]" : "bg-black/10 dark:bg-white/15 text-[#0F172A] dark:text-white"
-                      }`}
                   >
-                    {count}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+                    <span>{city === "all" ? "All Locations" : city}</span>
+                    <span
+                      className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${
+                        isSelected
+                          ? "bg-black/20 text-[#0A0D12]"
+                          : "bg-black/10 dark:bg-white/15 text-[#0F172A] dark:text-white"
+                      }`}
+                    >
+                      {count}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
 
-          {/* Compounds Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredCompounds.map((c) => (
+          {/* Clean Live Production empty state or Compound Cards */}
+          {compounds.length === 0 ? (
+            <div className="py-14 px-6 text-center rounded-3xl bg-[#0D111A] border border-dashed border-[#D4AF37]/35 space-y-4 max-w-2xl mx-auto shadow-2xl my-2">
+              <div className="w-14 h-14 mx-auto rounded-2xl bg-[#D4AF37]/10 border border-[#D4AF37]/25 flex items-center justify-center text-[#DFCA9E]">
+                <Building className="w-7 h-7 text-[#D4AF37]" />
+              </div>
+              <div className="space-y-1.5">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-bold mb-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Live Production Registry
+                </div>
+                <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight">
+                  No Compounds Currently Enrolled
+                </h3>
+                <p className="text-xs text-neutral-400 max-w-md mx-auto leading-relaxed">
+                  All demo records have been cleared. Onboard your live estate properties to activate automated facility escrow routing, quiet hours enforcement, and contractor dispatch.
+                </p>
+              </div>
+              <div className="pt-2">
+                <button
+                  onClick={() => setShowOnboardingModal(true)}
+                  className="py-3 px-6 rounded-xl bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0D12] font-bold text-xs shadow-lg shadow-[#D4AF37]/20 inline-flex items-center gap-2 transition active:scale-95"
+                >
+                  <Plus className="w-4 h-4 text-[#0A0D12]" />
+                  <span>+ Onboard First Compound Asset</span>
+                </button>
+              </div>
+            </div>
+          ) : filteredCompounds.length === 0 ? (
+            <div className="py-12 text-center rounded-2xl bg-white/[0.02] border border-white/5 space-y-2">
+              <Building className="w-8 h-8 text-neutral-500 mx-auto" />
+              <p className="text-sm text-neutral-400 font-mono">No compounds matching "{searchQuery}"</p>
+              <button
+                onClick={() => {
+                  setSearchQuery("");
+                  setSelectedCity("all");
+                }}
+                className="text-xs text-[#DFCA9E] hover:underline font-mono"
+              >
+                Clear search filters
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredCompounds.map((c) => (
               <div
                 key={c.id}
                 className="rounded-3xl bg-[#121722] border border-white/[0.08] hover:border-[#D4AF37]/40 transition-all flex flex-col justify-between overflow-hidden group shadow-xl"
@@ -796,22 +826,7 @@ export default function AdminOperations() {
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
-
-          {filteredCompounds.length === 0 && (
-            <div className="py-12 text-center rounded-2xl bg-white/[0.02] border border-white/5 space-y-2">
-              <Building className="w-8 h-8 text-neutral-500 mx-auto" />
-              <p className="text-sm text-neutral-400 font-mono">No compounds matching "{searchQuery}"</p>
-              <button
-                onClick={() => {
-                  setSearchQuery("");
-                  setSelectedCity("all");
-                }}
-                className="text-xs text-[#DFCA9E] hover:underline font-mono"
-              >
-                Clear search filters
-              </button>
+              ))}
             </div>
           )}
         </section>
