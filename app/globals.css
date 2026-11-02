@@ -1,26 +1,753 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #07090e;
+  --foreground: #f4f5f8;
+  --elevation-gold-primary: #d4af37;
+  --elevation-gold-light: #f5e6b8;
+  --elevation-gold-dark: #997a15;
+  --elevation-obsidian: #0b0e14;
+  --elevation-card-bg: rgba(15, 19, 28, 0.75);
+  --elevation-border: rgba(212, 175, 55, 0.15);
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #07090e;
+}
+::-webkit-scrollbar-thumb {
+  background: #1f2736;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #d4af37;
+}
+
+/* Architectural Luxury Grid & Ambient Mesh */
+.architectural-grid {
+  background-size: 48px 48px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+}
+
+.luxury-glow {
+  background: radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.12) 0%, rgba(7, 9, 14, 0) 70%);
+}
+
+.gold-foil-text {
+  background: linear-gradient(135deg, #fff7d6 0%, #e2c168 35%, #b58d2a 70%, #f9eac3 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.silver-sheen-text {
+  background: linear-gradient(135deg, #ffffff 0%, #d4d7e0 50%, #9ba1b0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Glassmorphic luxury cards */
+.glass-card {
+  background: rgba(14, 18, 26, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.glass-card:hover {
+  border-color: rgba(212, 175, 55, 0.35);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.8), 0 0 25px -5px rgba(212, 175, 55, 0.08);
+}
+
+.gold-border-glow {
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  box-shadow: inset 0 0 15px rgba(212, 175, 55, 0.03), 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* Smooth marquee or ticker */
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-float {
+  animation: floatSlow 6s ease-in-out infinite;
+}
+
+/* Print styles for downloadable receipts */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #111827 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+}
+
+/* ==========================================================================
+   MIDNIGHT OBSIDIAN (DARK MODE) HIGH-LUMINANCE TEXT & CARD CLARITY
+   Ensures radiant white text, platinum secondary copy, and clear card edges
+   ========================================================================== */
+
+:root:not(.theme-light) body,
+html:not(.theme-light) body {
+  background-color: #07090e !important;
+  color: #ffffff !important;
+}
+
+/* Make dark cards stand out clearly from the dark canvas with higher luminance and gold borders */
+:root:not(.theme-light) .bg-\[\#121722\],
+:root:not(.theme-light) .bg-\[\#121720\],
+:root:not(.theme-light) .bg-\[\#0F141E\],
+:root:not(.theme-light) .bg-\[\#0B0F17\],
+:root:not(.theme-light) .bg-\[\#151C27\],
+:root:not(.theme-light) .bg-\[\#101520\],
+:root:not(.theme-light) .bg-\[\#10151F\],
+:root:not(.theme-light) .bg-\[\#0F141F\],
+:root:not(.theme-light) .bg-\[\#141B26\],
+:root:not(.theme-light) .glass-card {
+  background-color: #111724 !important;
+  border-color: rgba(212, 175, 55, 0.28) !important;
+  box-shadow: 0 8px 30px -6px rgba(0, 0, 0, 0.8), 0 0 1px 1px rgba(212, 175, 55, 0.15) !important;
+}
+
+/* Secondary nested containers (specs capsules, tables, breakdown cards) */
+:root:not(.theme-light) .bg-\[\#070A0F\],
+:root:not(.theme-light) .bg-\[\#080B10\],
+:root:not(.theme-light) .bg-black\/40,
+:root:not(.theme-light) .bg-black\/50,
+:root:not(.theme-light) .bg-black\/60 {
+  background-color: #0c101a !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+}
+
+/* High-luminance typography in dark mode */
+:root:not(.theme-light) .text-white {
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+:root:not(.theme-light) .text-neutral-400 {
+  color: #cbd5e1 !important; /* Platinum slate - highly legible against dark backgrounds */
+}
+
+:root:not(.theme-light) .text-neutral-500 {
+  color: #94a3b8 !important; /* Soft silver slate */
+}
+
+:root:not(.theme-light) .text-neutral-300 {
+  color: #f1f5f9 !important; /* Crisp radiant off-white */
+}
+
+:root:not(.theme-light) .text-\[\#DFCA9E\] {
+  color: #f7e2a9 !important; /* Luminous warm champagne gold */
+  font-weight: 600;
+}
+
+:root:not(.theme-light) .text-\[\#D4AF37\] {
+  color: #e5c158 !important; /* Vivid architectural gold */
+}
+
+/* Dark mode inputs & textareas */
+:root:not(.theme-light) input,
+:root:not(.theme-light) select,
+:root:not(.theme-light) textarea {
+  background-color: #0b0e16 !important;
+  color: #ffffff !important;
+  border-color: rgba(212, 175, 55, 0.3) !important;
+}
+
+:root:not(.theme-light) input::placeholder,
+:root:not(.theme-light) textarea::placeholder {
+  color: #64748b !important;
+}
+
+/* ==========================================================================
+   PRIVATE WEALTH ALABASTER (LIGHT MODE) HIGH-CONTRAST ARCHITECTURE
+   Guarantees ZERO black backgrounds anywhere in Light Mode.
+   Delivers supreme legibility, pure white luxury cards, and obsidian text clarity.
+   ========================================================================== */
+
+html.theme-light,
+body.theme-light,
+.theme-light {
+  --background: #f8f9fb;
+  --foreground: #0f172a;
+  background-color: #f8f9fb !important;
+  color: #0f172a !important;
+}
+
+/* LOGO THEME SWITCHING (HIGH CONTRAST IN BOTH MODES) */
+.logo-dark-version {
+  display: block;
+}
+.logo-light-version {
+  display: none;
+}
+
+.theme-light .logo-dark-version,
+html.theme-light .logo-dark-version {
+  display: none !important;
+}
+.theme-light .logo-light-version,
+html.theme-light .logo-light-version {
+  display: block !important;
+}
+
+.theme-dark .logo-light-version,
+html.theme-dark .logo-light-version {
+  display: none !important;
+}
+.theme-dark .logo-dark-version,
+html.theme-dark .logo-dark-version {
+  display: block !important;
+}
+
+/* 1. UNIVERSAL CANVASES & WRAPPERS */
+.theme-light main,
+html.theme-light main,
+.theme-light [class*="min-h-screen"],
+html.theme-light [class*="min-h-screen"] {
+  background-color: #f8f9fb !important;
+  color: #0f172a !important;
+}
+
+/* 2. UNIVERSAL CARD SURFACES: PURE WHITE (#FFFFFF)
+   Targets every custom dark hex code in the application via both
+   case-insensitive attribute wildcards AND explicit class listings */
+.theme-light [class*="bg-[#0" i],
+.theme-light [class*="bg-[#1" i],
+.theme-light .glass-card,
+.theme-light .bg-\[\#07090D\],
+.theme-light .bg-\[\#07090E\],
+.theme-light .bg-\[\#07090e\],
+.theme-light .bg-\[\#070A0F\],
+.theme-light .bg-\[\#080B10\],
+.theme-light .bg-\[\#080B11\],
+.theme-light .bg-\[\#090C12\],
+.theme-light .bg-\[\#090C13\],
+.theme-light .bg-\[\#090C14\],
+.theme-light .bg-\[\#090D14\],
+.theme-light .bg-\[\#0A0D12\],
+.theme-light .bg-\[\#0A0D14\],
+.theme-light .bg-\[\#0A0D15\],
+.theme-light .bg-\[\#0A0E16\],
+.theme-light .bg-\[\#0B0E14\],
+.theme-light .bg-\[\#0B0E15\],
+.theme-light .bg-\[\#0B0F17\],
+.theme-light .bg-\[\#0b141b\],
+.theme-light .bg-\[\#0C1017\],
+.theme-light .bg-\[\#0D1017\],
+.theme-light .bg-\[\#0D1119\],
+.theme-light .bg-\[\#0D111A\],
+.theme-light .bg-\[\#0E131C\],
+.theme-light .bg-\[\#0E131E\],
+.theme-light .bg-\[\#0E131F\],
+.theme-light .bg-\[\#0e161f\],
+.theme-light .bg-\[\#0f131a\],
+.theme-light .bg-\[\#0F141E\],
+.theme-light .bg-\[\#0F141F\],
+.theme-light .bg-\[\#0F1420\],
+.theme-light .bg-\[\#10141C\],
+.theme-light .bg-\[\#10141D\],
+.theme-light .bg-\[\#10151F\],
+.theme-light .bg-\[\#101520\],
+.theme-light .bg-\[\#111722\],
+.theme-light .bg-\[\#111724\],
+.theme-light .bg-\[\#121720\],
+.theme-light .bg-\[\#121722\],
+.theme-light .bg-\[\#121824\],
+.theme-light .bg-\[\#141224\],
+.theme-light .bg-\[\#141A24\],
+.theme-light .bg-\[\#141B26\],
+.theme-light .bg-\[\#151B24\],
+.theme-light .bg-\[\#151C27\],
+.theme-light .bg-\[\#151C28\],
+.theme-light .bg-\[\#161D27\] {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
+}
+
+/* 3. SUB-CAPSULES, PILLS & OVERLAYS: OFF-WHITE (#F8FAFC) */
+.theme-light [class*="bg-black/"],
+.theme-light .bg-black:not(.fixed),
+.theme-light [class*="bg-black"]:not(.fixed),
+.theme-light .bg-white\/\[0\.02\],
+.theme-light .bg-white\/\[0\.03\],
+.theme-light .bg-white\/\[0\.04\],
+.theme-light .bg-white\/\[0\.05\],
+.theme-light .bg-white\/\[0\.06\],
+.theme-light .bg-white\/\[0\.08\],
+.theme-light .bg-white\/10,
+.theme-light .bg-white\/15,
+.theme-light .bg-white\/20 {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+/* 4. MODAL BACKDROP OVERLAYS (ONLY fixed full-screen dialog backdrops retain subtle dark scrim) */
+.theme-light .fixed.inset-0[class*="bg-black"],
+.theme-light .fixed.inset-0.bg-black\/80,
+.theme-light .fixed.inset-0.bg-black\/85,
+.theme-light .fixed.inset-0.bg-black\/75 {
+  background-color: rgba(15, 23, 42, 0.48) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+/* Modal dialog container card itself inside the backdrop */
+.theme-light .fixed.inset-0 > div,
+.theme-light .fixed.inset-0 [class*="bg-[#1" i],
+.theme-light .fixed.inset-0 [class*="bg-[#0" i] {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+  box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.25) !important;
+}
+
+/* 5. ELIMINATE DARK GRADIENTS ACROSS CARDS (Never apply solid white over image overlays) */
+.theme-light [class*="from-[#0" i]:not(.slide-overlay-t):not(.slide-overlay-r):not(.pointer-events-none),
+.theme-light [class*="from-[#1" i]:not(.slide-overlay-t):not(.slide-overlay-r):not(.pointer-events-none),
+.theme-light [class*="from-black"]:not(.slide-overlay-t):not(.slide-overlay-r):not(.pointer-events-none),
+.theme-light [class*="to-[#0" i]:not(.slide-overlay-t):not(.slide-overlay-r):not(.pointer-events-none),
+.theme-light [class*="to-[#1" i]:not(.slide-overlay-t):not(.slide-overlay-r):not(.pointer-events-none),
+.theme-light [class*="to-black"]:not(.slide-overlay-t):not(.slide-overlay-r):not(.pointer-events-none),
+.theme-light [class*="via-[#0" i]:not(.slide-overlay-t):not(.slide-overlay-r):not(.pointer-events-none),
+.theme-light [class*="via-[#1" i]:not(.slide-overlay-t):not(.slide-overlay-r):not(.pointer-events-none),
+.theme-light [class*="via-black"]:not(.slide-overlay-t):not(.slide-overlay-r):not(.pointer-events-none) {
+  background-image: none !important;
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* Scrim for hero photo slider with high opacity in Light Mode for crisp text readability */
+.theme-light .slide-image {
+  filter: brightness(0.85) contrast(1.04) !important;
+}
+
+.theme-light .slide-overlay-t {
+  background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 0.98) 0%,
+    rgba(255, 255, 255, 0.92) 50%,
+    rgba(255, 255, 255, 0.65) 80%,
+    rgba(255, 255, 255, 0.25) 100%
+  ) !important;
+}
+
+.theme-light .slide-overlay-r {
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.98) 0%,
+    rgba(255, 255, 255, 0.88) 50%,
+    rgba(255, 255, 255, 0.45) 80%,
+    transparent 100%
+  ) !important;
+}
+
+/* Light mode crisp readability over visible image */
+.theme-light .slide-content-box {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 12px 36px -4px rgba(15, 23, 42, 0.15) !important;
+}
+
+.theme-light .slide-title {
+  color: #0f172a !important;
+  font-weight: 800 !important;
+  text-shadow: none !important;
+}
+
+.theme-light .slide-location {
+  color: #334155 !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
+}
+
+.theme-light .slide-subheading {
+  color: #1e293b !important;
+  font-weight: 500 !important;
+  text-shadow: none !important;
+}
+
+.theme-light .slide-stat-card {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05) !important;
+}
+
+.theme-light .slide-stat-label {
+  color: #475569 !important;
+  font-weight: 600 !important;
+}
+
+.theme-light .slide-stat-value {
+  color: #0f172a !important;
+  font-weight: 700 !important;
+}
+
+.theme-light .slide-stat-sub {
+  color: #64748b !important;
+  font-weight: 500 !important;
+}
+
+.theme-light .slide-stat-gold {
+  color: #854d0e !important;
+  font-weight: 700 !important;
+}
+
+.theme-light .slide-badge-gold {
+  background-color: #fef9c3 !important;
+  color: #854d0e !important;
+  border-color: #fde047 !important;
+}
+
+.theme-light .slide-badge-dark {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+  font-weight: 600 !important;
+}
+
+.theme-light .slide-nav-btn {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(8px) !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15) !important;
+}
+
+.theme-light .slide-nav-btn:hover {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+.theme-light .slide-dot-inactive {
+  background-color: rgba(15, 23, 42, 0.35) !important;
+}
+
+.theme-light .slide-dot-active {
+  background-color: #9a7b2c !important;
+}
+
+/* 6. HIGH-CONTRAST BUTTON TYPOGRAPHY ENGINE (DARK & LIGHT MODES)
+   Guarantees maximum visibility, bold weights, and crystal-clear contrast on every button */
+
+/* Universal button text visibility defaults */
+button,
+[role="button"] {
+  font-weight: 600 !important;
+  letter-spacing: -0.01em;
+}
+
+/* Primary Gold Action Buttons: Solid Obsidian Black Text (#000000 / #0A0D12) */
+button.bg-\[\#D4AF37\],
+button[class*="bg-[#D4AF37]"]:not([class*="/"]),
+button[class*="bg-[#E5C158]"],
+button[class*="bg-[#C2A774]"]:not([class*="/"]),
+.theme-light button.bg-\[\#D4AF37\],
+.theme-light button[class*="bg-[#D4AF37]"]:not([class*="/"]),
+:root:not(.theme-light) button.bg-\[\#D4AF37\],
+:root:not(.theme-light) button[class*="bg-[#D4AF37]"]:not([class*="/"]) {
+  background-color: #d4af37 !important;
+  color: #000000 !important;
+  font-weight: 700 !important;
+}
+
+button.bg-\[\#D4AF37\] *,
+button[class*="bg-[#D4AF37]"]:not([class*="/"]) * {
+  color: #000000 !important;
+  font-weight: 700 !important;
+}
+
+/* Dark Mode Button Legibility (Bright Crisp White & Luminous Gold) */
+:root:not(.theme-light) button:not(.bg-\[\#D4AF37\]):not([class*="bg-[#D4AF37]"]):not([class*="/"]) {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+:root:not(.theme-light) button.text-neutral-400,
+:root:not(.theme-light) button [class*="text-neutral-400"],
+:root:not(.theme-light) button.text-neutral-300,
+:root:not(.theme-light) button [class*="text-neutral-300"] {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+:root:not(.theme-light) button.text-\[\#DFCA9E\],
+:root:not(.theme-light) button [class*="text-[#DFCA9E]"] {
+  color: #f7e2a9 !important;
+  font-weight: 700 !important;
+}
+
+/* Light Mode Button Legibility (Deep Obsidian Charcoal & High-Contrast Borders) */
+.theme-light button,
+.theme-light [role="button"] {
+  font-weight: 700 !important;
+}
+
+.theme-light button:not(.bg-\[\#D4AF37\]):not([class*="bg-[#D4AF37]"]) {
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+.theme-light button.text-neutral-400,
+.theme-light button [class*="text-neutral-400"],
+.theme-light button.text-neutral-300,
+.theme-light button [class*="text-neutral-300"],
+.theme-light button.text-neutral-500,
+.theme-light button [class*="text-neutral-500"],
+.theme-light button.text-white,
+.theme-light button [class*="text-white"] {
+  color: #0f172a !important;
+  font-weight: 700 !important;
+}
+
+/* Light Mode Secondary Pill Buttons (e.g. Rent Roll, Audit Escrow, Passcode buttons) */
+.theme-light button.bg-\[\#D4AF37\]\/15,
+.theme-light button.bg-\[\#D4AF37\]\/20,
+.theme-light button[class*="bg-[#D4AF37]/"],
+.theme-light button[class*="bg-[#C2A774]/"] {
+  background-color: #fef08a !important; /* Luminous Warm Gold */
+  border-color: #ca8a04 !important;
+  color: #713f12 !important; /* Deep Bronze Charcoal (AAA contrast) */
+  font-weight: 700 !important;
+}
+
+.theme-light button.bg-\[\#D4AF37\]\/15 *,
+.theme-light button[class*="bg-[#D4AF37]/"] *,
+.theme-light button[class*="bg-[#C2A774]/"] * {
+  color: #713f12 !important;
+  font-weight: 700 !important;
+}
+
+/* Non-button status tags & badges */
+.theme-light span.bg-\[\#D4AF37\]\/15,
+.theme-light span.bg-\[\#D4AF37\]\/10,
+.theme-light span.bg-\[\#D4AF37\]\/20,
+.theme-light span.bg-\[\#C2A774\]\/10,
+.theme-light span.bg-\[\#C2A774\]\/15,
+.theme-light span.bg-\[\#C2A774\]\/20,
+.theme-light span.bg-\[\#C2A774\]\/25 {
+  background-color: #fef9c3 !important;
+  border-color: rgba(180, 83, 9, 0.25) !important;
+  color: #9a7b2c !important;
+  font-weight: 600 !important;
+}
+
+/* 7. SUPREME TYPOGRAPHY CONTRAST FOR ADVANCED / SENIOR CLIENTS */
+/* Primary Headings, Titles & Emphasized Text */
+.theme-light h1,
+.theme-light h2,
+.theme-light h3,
+.theme-light h4,
+.theme-light h5,
+.theme-light h6,
+.theme-light strong,
+.theme-light b,
+.theme-light .text-white,
+.theme-light [class*="text-white"],
+.theme-light .text-\[\#F3F4F6\],
+.theme-light .text-\[\#F4F5F8\],
+.theme-light .text-\[\#E5E7EB\] {
+  color: #0f172a !important; /* Deep Obsidian Charcoal (15:1+ contrast) */
+  font-weight: 600;
+}
+
+/* Secondary & Informative Body Copy */
+.theme-light p,
+.theme-light .text-neutral-200,
+.theme-light .text-neutral-300,
+.theme-light [class*="text-neutral-200"],
+.theme-light [class*="text-neutral-300"] {
+  color: #1e293b !important; /* Rich Dark Slate 800 */
+}
+
+/* Sub-labels, Metadata, Timestamps & Descriptive Copy */
+.theme-light .text-neutral-400,
+.theme-light [class*="text-neutral-400"] {
+  color: #334155 !important; /* Slate 700 - super sharp and legible */
+  font-weight: 500;
+}
+
+.theme-light .text-neutral-500,
+.theme-light [class*="text-neutral-500"] {
+  color: #475569 !important; /* Slate 600 - never faint or washed out */
+}
+
+/* Gold Text: Mapped to Burnished Deep Gold #9A7B2C for WCAG AAA Compliance on White */
+.theme-light .text-\[\#DFCA9E\],
+.theme-light [class*="text-[#DFCA9E]" i],
+.theme-light .text-\[\#D4AF37\],
+.theme-light [class*="text-[#D4AF37]" i],
+.theme-light .text-\[\#E2C792\],
+.theme-light [class*="text-[#E2C792]" i],
+.theme-light .text-\[\#C2A774\],
+.theme-light [class*="text-[#C2A774]" i] {
+  color: #9a7b2c !important; /* Deep Architectural Gold */
+  font-weight: 600 !important;
+}
+
+/* Foil Headlines for Light Mode */
+.theme-light .gold-foil-text {
+  background: linear-gradient(135deg, #785e17 0%, #9a7b2c 50%, #634d11 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+.theme-light .silver-sheen-text {
+  background: linear-gradient(135deg, #0f172a 0%, #334155 50%, #0f172a 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+/* 8. CRISP BORDERS & DIVIDERS */
+.theme-light [class*="border-white/"],
+.theme-light [class*="border-neutral-800"],
+.theme-light [class*="border-neutral-700"] {
+  border-color: #e2e8f0 !important;
+}
+
+.theme-light [class*="divide-white/"] > :not([hidden]) ~ :not([hidden]) {
+  border-color: #f1f5f9 !important;
+}
+
+/* 9. HEADER & NAVIGATION BAR */
+.theme-light header {
+  background-color: rgba(255, 255, 255, 0.96) !important;
+  border-bottom-color: #e2e8f0 !important;
+  box-shadow: 0 1px 16px rgba(15, 23, 42, 0.05) !important;
+}
+
+.theme-light nav {
+  background-color: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
+}
+
+.theme-light nav a.text-neutral-300 {
+  color: #334155 !important;
+}
+
+.theme-light nav a.text-neutral-300:hover {
+  color: #0f172a !important;
+  background-color: #ffffff !important;
+}
+
+/* Mobile bottom dock */
+.theme-light .md\:hidden {
+  background-color: rgba(255, 255, 255, 0.98) !important;
+  border-top-color: #e2e8f0 !important;
+}
+
+/* 10. FORM FIELDS & SEARCH CONTROLS */
+.theme-light input,
+.theme-light select,
+.theme-light textarea {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+.theme-light input::placeholder,
+.theme-light textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* 11. TABLES & LEDGERS */
+.theme-light table {
+  background-color: #ffffff !important;
+}
+
+.theme-light thead,
+.theme-light thead.bg-\[\#101520\] {
+  background-color: #f1f5f9 !important;
+  border-bottom-color: #e2e8f0 !important;
+}
+
+.theme-light thead th {
+  color: #334155 !important;
+  font-weight: 600 !important;
+}
+
+.theme-light tbody tr {
+  background-color: #ffffff !important;
+  border-bottom-color: #f1f5f9 !important;
+}
+
+.theme-light tbody tr:hover {
+  background-color: #f8fafc !important;
+}
+
+.theme-light tbody tr td span.font-mono.text-white {
+  color: #0f172a !important;
+  font-weight: 600 !important;
+}
+
+/* 12. FOOTER - ZERO BLACK, CRISP WHITE ARCHITECTURE */
+.theme-light footer,
+.theme-light footer.bg-\[\#07090D\],
+.theme-light footer [class*="bg-[#0" i],
+.theme-light footer [class*="bg-[#1" i] {
+  background-color: #ffffff !important;
+  border-top-color: #e2e8f0 !important;
+  color: #334155 !important;
+}
+
+.theme-light footer .border-b,
+.theme-light footer .border-t {
+  border-color: #f1f5f9 !important;
+}
+
+.theme-light footer h4,
+.theme-light footer strong,
+.theme-light footer [class*="text-white"] {
+  color: #0f172a !important;
+}
+
+.theme-light footer a {
+  color: #334155 !important;
+}
+
+.theme-light footer a:hover {
+  color: #9a7b2c !important;
+}
+
+.theme-light footer .text-neutral-300,
+.theme-light footer .text-neutral-400 {
+  color: #334155 !important;
+}
+
+.theme-light footer .text-neutral-500 {
+  color: #64748b !important;
+}
+
+/* 13. ARCHITECTURAL GRID IN LIGHT MODE */
+.theme-light .architectural-grid {
+  background-image: 
+    linear-gradient(to right, rgba(15, 23, 42, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.035) 1px, transparent 1px) !important;
+}
+
+
