@@ -7,16 +7,14 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://stay.com.ng"),
   title: "Elevated Stay | Asset Lifecycle Protection & Turnkey Residential Management",
   description:
-    "Turnkey residential asset lifecycle protection, automated landlord split payouts, and headless tenant operations for premier compounds in Lagos and Abuja.",
+    "Turnkey residential and commercial asset lifecycle protection, automated landlord split payouts, and headless tenant operations for premier compounds.",
   keywords: [
     "Elevated Stay",
     "Asset Lifecycle Protection",
     "Turnkey Residential Management",
-    "Lagos Luxury Real Estate",
-    "Lekki",
-    "Ikoyi",
-    "Banana Island",
-    "PropTech Nigeria",
+    "Commercial Property Management",
+    "PropTech",
+    "Asset Governance",
   ],
   icons: {
     icon: [
@@ -29,7 +27,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Elevated Stay | Asset Lifecycle Protection & Turnkey Residential Management",
     description:
-      "Turnkey residential asset lifecycle protection, automated landlord split payouts, and headless tenant operations for premier compounds in Lagos and Abuja.",
+      "Turnkey residential and commercial asset lifecycle protection, automated landlord split payouts, and headless operations for premier compounds.",
     url: "https://stay.com.ng",
     siteName: "Elevated Stay",
     images: [
@@ -47,7 +45,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Elevated Stay | Asset Lifecycle Protection",
     description:
-      "Turnkey residential asset lifecycle protection for premier compounds in Lagos and Abuja.",
+      "Turnkey residential and commercial asset lifecycle protection for premier compounds.",
     images: ["/logo-full.png"],
   },
 };

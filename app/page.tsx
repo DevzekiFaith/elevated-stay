@@ -77,7 +77,7 @@ export default function HomePage() {
             </h1>
 
             <p className="text-base sm:text-lg lg:text-xl text-neutral-300 max-w-3xl mx-auto leading-relaxed font-normal pt-2">
-              Engineered for high-value family compounds and institutional diaspora landlords across Old Ikoyi, Banana Island, and Maitama.
+              Engineered for high-value family compounds and institutional diaspora landlords.
               Eliminating agency commingling, tenant friction, and structural degradation through software-enforced governance.
             </p>
           </motion.div>
@@ -370,7 +370,7 @@ export default function HomePage() {
                     <div className="p-4 rounded-xl bg-[#070A0F] border border-white/[0.06] space-y-1">
                       <span className="text-[10px] font-mono text-neutral-400 uppercase block">Active Estates Under Watch</span>
                       <span className="text-xl font-bold font-mono text-white block mt-1">3 Premier Compounds</span>
-                      <span className="text-[10px] text-neutral-400 font-mono block">Old Ikoyi · Banana Island · Maitama</span>
+                      <span className="text-[10px] text-neutral-400 font-mono block">Multi-Regional · Prime Compounds</span>
                     </div>
 
                     <div className="p-4 rounded-xl bg-[#070A0F] border border-white/[0.06] space-y-1">
@@ -467,7 +467,7 @@ export default function HomePage() {
                 Premier Residential Compounds Under Protection
               </h2>
               <p className="text-xs sm:text-sm text-neutral-400 mt-1 max-w-2xl">
-                Explore signature properties in Old Ikoyi, Banana Island, and Maitama operating under dedicated facility escrows.
+                Explore signature properties operating under dedicated facility escrows and software-enforced lifecycle governance.
               </p>
             </div>
             <div className="flex items-center gap-2 text-xs font-mono text-neutral-400">
@@ -553,7 +553,7 @@ export default function HomePage() {
                     Why Preventative Lifecycle Audits Stop Capital Decay
                   </h3>
                   <p className="text-xs text-neutral-300 leading-relaxed pt-1">
-                    In prime Lagos and Abuja residential properties (Old Ikoyi, Banana Island, Maitama), major capital loss occurs when minor issues (VRV chiller coil acidity from marine air, borehole TDS membrane saturation, solar BMS balance delays) are ignored until total component failure.
+                    In prime residential compounds and commercial properties, major capital loss occurs when minor issues (VRV chiller coil acidity, borehole TDS membrane saturation, solar BMS balance delays) are ignored until total component failure.
                   </p>
                 </div>
 
@@ -675,7 +675,7 @@ export default function HomePage() {
             Commission Asset Lifecycle Protection for Your Residential Compound
           </h2>
           <p className="text-xs sm:text-sm text-neutral-300 max-w-2xl mx-auto leading-relaxed">
-            Whether you own a multi-family compound in Old Ikoyi, a diplomatic residence in Maitama, or a diaspora residential portfolio across Lagos, our asset architects are available for private consultations.
+            Whether you own a multi-family compound, an institutional commercial asset, or an extensive diaspora property portfolio, our asset architects are available for private consultations.
           </p>
 
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -694,7 +694,7 @@ export default function HomePage() {
           </div>
 
           <p className="text-[11px] text-neutral-500 font-mono pt-4">
-            Direct Concierge Desk: concierge@stay.com.ng · Old Ikoyi & Maitama Desks
+            Direct Concierge Desk: concierge@stay.com.ng · Dedicated Private Client Desks
           </p>
         </div>
       </section>

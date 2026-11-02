@@ -481,7 +481,7 @@ export default function AdminOperations() {
               {formatNaira(platformTotalGross)}
             </div>
             <div className="mt-2 text-[11px] text-neutral-400 font-mono">
-              {platformTotalGross > 0 ? "Across Ikoyi, Banana Is. & Maitama" : "Awaiting First Client Settlement"}
+              {platformTotalGross > 0 ? "Across Managed Estates & Compounds" : "Awaiting First Client Settlement"}
             </div>
           </div>
 

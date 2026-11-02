@@ -2,7 +2,7 @@
 ### Turnkey Residential Management & Asset Lifecycle Protection
 *An Elevation Studio Initiative*
 
-Elevated Stay is an architectural-grade PropTech platform engineered for high-value family compounds and institutional diaspora investors in Old Ikoyi, Banana Island, Victoria Island, Lekki Phase 1 (Lagos), and Maitama / Asokoro (Abuja).
+Elevated Stay is an architectural-grade PropTech platform engineered for high-value family compounds and institutional diaspora investors across prime residential and commercial estates.
 
 ---
 
