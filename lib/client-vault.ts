@@ -21,6 +21,7 @@ export interface ClientVaultAccount {
   issuedBy: string;
   deliveryMethod: "Tamper-Evident Physical Folio" | "VIP WhatsApp Concierge Dispatch" | "Executive Courier";
   isLiveAccount: boolean;
+  annexureQuietHoursCode?: string;
 }
 
 const STORAGE_KEY = "elevation_real_clients_production_vault_v4";
@@ -65,12 +66,17 @@ export function addClientVaultInStorage(
       now.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }) +
       " WAT";
 
+    const quietHoursCode =
+      client.annexureQuietHoursCode?.trim() ||
+      generateAnnexureQuietHoursCode(client.name, client.estate, client.roleCategory);
+
     const newAccount: ClientVaultAccount = {
       ...client,
       id: newId,
       issuedAt: formattedDate,
       passcode: client.passcode.trim().toUpperCase(),
       pinCode: client.pinCode.trim(),
+      annexureQuietHoursCode: quietHoursCode,
       isLiveAccount: true,
     };
 
@@ -150,6 +156,24 @@ export function generateRandomPasskey(prefix: string): string {
   const cleanPrefix = prefix.replace(/[^a-zA-Z]/g, "").toUpperCase().slice(0, 7) || "CLIENT";
   const num = Math.floor(1000 + Math.random() * 9000);
   return `${cleanPrefix}-${num}`;
+}
+
+export function generateAnnexureQuietHoursCode(
+  clientName: string = "",
+  estate: string = "",
+  role: string = "resident"
+): string {
+  const cleanSurname = (clientName.trim().split(" ").filter(Boolean).pop() || "CLI")
+    .toUpperCase()
+    .replace(/[^A-Z]/g, "")
+    .slice(0, 4) || "EST";
+  const cleanEstate = estate
+    .trim()
+    .replace(/[^a-zA-Z]/g, "")
+    .toUpperCase()
+    .slice(0, 3) || "ENC";
+  const num = Math.floor(1000 + Math.random() * 9000);
+  return `ANX-QH-${cleanEstate}-${cleanSurname}-${num}`;
 }
 
 export function vaultToLandlord(v: ClientVaultAccount): Landlord {

@@ -30,6 +30,7 @@ import {
   updateClientCredentialsInStorage,
   generateRandomPasskey,
   generateRandomPin,
+  generateAnnexureQuietHoursCode,
   ClientVaultAccount,
   isAdminAuthenticated,
   setAdminAuthenticated,
@@ -72,6 +73,7 @@ import {
   Camera,
   Upload,
   Image as ImageIcon,
+  Clock,
 } from "lucide-react";
 
 export default function AdminOperations() {
@@ -107,6 +109,7 @@ export default function AdminOperations() {
   const [newClientDelivery, setNewClientDelivery] = useState<
     "Tamper-Evident Physical Folio" | "VIP WhatsApp Concierge Dispatch" | "Executive Courier"
   >("VIP WhatsApp Concierge Dispatch");
+  const [newClientQuietHoursCode, setNewClientQuietHoursCode] = useState("");
 
   // Admin Master Authentication Gate State
   const [isAdminAuthed, setIsAdminAuthed] = useState<boolean>(false);
@@ -206,17 +209,28 @@ export default function AdminOperations() {
     setCustomPin(newPin);
   };
 
+  useEffect(() => {
+    if (showEnrollModal) {
+      setNewClientQuietHoursCode(
+        generateAnnexureQuietHoursCode(newClientName, newClientEstate, newClientRoleCategory)
+      );
+    }
+  }, [newClientName, newClientEstate, newClientRoleCategory, showEnrollModal]);
+
   const handleOpenEnrollModal = () => {
+    const defaultEstate = compounds[0]?.name || "Prime Residential Compound";
+    const defaultLocation = compounds[0]?.location || "Prime Residential Enclave, Lagos";
     setNewClientName("");
     setNewClientRoleCategory("landlord");
     setNewClientRoleTitle("Family Compound Principal");
-    setNewClientEstate(compounds[0]?.name || "The Obsidian Courtyard");
-    setNewClientLocation(compounds[0]?.location || "Prime Residential Enclave, Lagos");
+    setNewClientEstate(defaultEstate);
+    setNewClientLocation(defaultLocation);
     setNewClientPhone("+234 ");
     setNewClientEmail("");
     setNewClientMetric("₦120,000,000 Annual Yield · 8 Units");
     setNewClientPasscode(generateRandomPasskey("CLIENT"));
     setNewClientPin(generateRandomPin());
+    setNewClientQuietHoursCode(generateAnnexureQuietHoursCode("", defaultEstate, "landlord"));
     setShowEnrollModal(true);
   };
 
@@ -246,6 +260,9 @@ export default function AdminOperations() {
       securityStatus: "FIDO2 Biometric Hardware Token Synced",
       passcode: newClientPasscode.trim(),
       pinCode: newClientPin.trim(),
+      annexureQuietHoursCode:
+        newClientQuietHoursCode.trim() ||
+        generateAnnexureQuietHoursCode(newClientName, newClientEstate, newClientRoleCategory),
       destination,
       issuedBy: "Director of Asset Protection & Security Desk",
       deliveryMethod: newClientDelivery,
@@ -256,7 +273,7 @@ export default function AdminOperations() {
 
     showToast({
       title: "Real Client Principal Enrolled",
-      detail: `${newClientName} registered successfully in the live enclave vault.`,
+      detail: `${newClientName} registered. Annexure Quiet Hours Code: ${newClientQuietHoursCode}`,
       type: "security",
     });
   };
@@ -1091,9 +1108,28 @@ export default function AdminOperations() {
                       <td className="py-4 px-4">
                         <div className="text-white font-medium">{client.estate}</div>
                         <div className="text-[11px] text-neutral-400">{client.location}</div>
-                        <span className="mt-1 inline-block px-2 py-0.5 rounded text-[10px] bg-white/[0.05] text-neutral-300 border border-white/10">
-                          {client.badge}
-                        </span>
+                        <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
+                          <span className="inline-block px-2 py-0.5 rounded text-[10px] bg-white/[0.05] text-neutral-300 border border-white/10">
+                            {client.badge}
+                          </span>
+                          {client.annexureQuietHoursCode && (
+                            <span
+                              className="px-2 py-0.5 rounded text-[10px] font-mono bg-[#D4AF37]/10 text-[#DFCA9E] border border-[#D4AF37]/25 flex items-center gap-1 cursor-pointer hover:bg-[#D4AF37]/20 transition"
+                              onClick={() => {
+                                navigator.clipboard.writeText(client.annexureQuietHoursCode || "");
+                                showToast({
+                                  title: "Annexure Code Copied",
+                                  detail: `${client.annexureQuietHoursCode} copied to clipboard.`,
+                                  type: "info",
+                                });
+                              }}
+                              title="Click to copy Annexure Quiet Hours Code"
+                            >
+                              <Clock className="w-2.5 h-2.5 text-[#D4AF37]" />
+                              <span>{client.annexureQuietHoursCode}</span>
+                            </span>
+                          )}
+                        </div>
                       </td>
 
                       <td className="py-4 px-4">
@@ -1343,6 +1379,7 @@ Your private vault access for ${whatsappDispatchClient.estate} has been authoriz
 
 • Personal Passkey: *${whatsappDispatchClient.passcode}*
 • 4-Digit Security PIN: *${whatsappDispatchClient.pinCode}*
+• Contractual Annexure Quiet Hours: *${whatsappDispatchClient.annexureQuietHoursCode || "ANX-QH-ENFORCED"}*
 • Designated Escrow Hub: Standard Chartered Bank Nigeria
 • Access Portal: https://stay.com.ng${whatsappDispatchClient.destination}
 
@@ -1356,7 +1393,7 @@ Your private vault access for ${whatsappDispatchClient.estate} has been authoriz
             <div className="pt-2 flex items-center gap-3 font-mono">
               <button
                 onClick={() => {
-                  const messageText = `CONFIDENTIAL ASSET PROTECTION ADVISORY\nDear ${whatsappDispatchClient.name},\nYour private vault access for ${whatsappDispatchClient.estate} has been authorized:\n• Personal Passkey: ${whatsappDispatchClient.passcode}\n• 4-Digit Security PIN: ${whatsappDispatchClient.pinCode}\n• Access Portal: https://stay.com.ng${whatsappDispatchClient.destination}`;
+                  const messageText = `CONFIDENTIAL ASSET PROTECTION ADVISORY\nDear ${whatsappDispatchClient.name},\nYour private vault access for ${whatsappDispatchClient.estate} has been authorized:\n• Personal Passkey: ${whatsappDispatchClient.passcode}\n• 4-Digit Security PIN: ${whatsappDispatchClient.pinCode}\n• Contractual Annexure Quiet Hours: ${whatsappDispatchClient.annexureQuietHoursCode || "ANX-QH-ENFORCED"}\n• Access Portal: https://stay.com.ng${whatsappDispatchClient.destination}`;
                   navigator.clipboard.writeText(messageText);
                   showToast({
                     title: "WhatsApp Dispatch Copied",
@@ -1443,9 +1480,9 @@ Your private vault access for ${whatsappDispatchClient.estate} has been authoriz
 
               <div className="p-4 rounded-xl bg-black/70 border border-[#D4AF37]/40 space-y-2">
                 <div className="text-[11px] text-[#DFCA9E] font-bold uppercase tracking-wider">
-                  Personal Vault Access Keys:
+                  Personal Vault Access & Covenants:
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div>
                     <span className="text-[10px] text-neutral-400 block">Master Passkey:</span>
                     <span className="text-base font-bold text-[#D4AF37] font-mono">{folioModalClient.passcode}</span>
@@ -1454,11 +1491,17 @@ Your private vault access for ${whatsappDispatchClient.estate} has been authoriz
                     <span className="text-[10px] text-neutral-400 block">4-Digit Security PIN:</span>
                     <span className="text-base font-bold text-white font-mono">{folioModalClient.pinCode}</span>
                   </div>
+                  <div>
+                    <span className="text-[10px] text-neutral-400 block">Annexure Quiet Hours:</span>
+                    <span className="text-xs font-bold text-[#DFCA9E] font-mono block mt-1">
+                      {folioModalClient.annexureQuietHoursCode || "ANX-QH-ENFORCED"}
+                    </span>
+                  </div>
                 </div>
               </div>
 
               <p className="text-[11px] text-neutral-400 font-sans leading-relaxed">
-                This document contains confidential cryptographic access credentials. The bearer must enter either the Master Passkey or 4-Digit PIN at <strong className="text-white">stay.com.ng</strong> to review yield and authorize operations.
+                This document contains confidential cryptographic access credentials. The bearer is contractually bound to the Quiet Hours covenant under Annexure <strong className="text-[#DFCA9E] font-mono">{folioModalClient.annexureQuietHoursCode || "ANX-QH-ENFORCED"}</strong> (22:00 – 07:00 WAT). Enter credentials at <strong className="text-white">stay.com.ng</strong> to review yield and authorize operations.
               </p>
             </div>
 
@@ -1476,7 +1519,7 @@ Your private vault access for ${whatsappDispatchClient.estate} has been authoriz
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => {
-                    const folioText = `ELEVATED STAY CONFIDENTIAL ASSET VAULT CERTIFICATE\nIssued to: ${folioModalClient.name}\nCompound: ${folioModalClient.estate}\nMaster Passkey: ${folioModalClient.passcode}\n4-Digit PIN: ${folioModalClient.pinCode}\nIssued via: ${folioModalClient.deliveryMethod}`;
+                    const folioText = `ELEVATED STAY CONFIDENTIAL ASSET VAULT CERTIFICATE\nIssued to: ${folioModalClient.name}\nCompound: ${folioModalClient.estate}\nMaster Passkey: ${folioModalClient.passcode}\n4-Digit PIN: ${folioModalClient.pinCode}\nAnnexure Quiet Hours Code: ${folioModalClient.annexureQuietHoursCode || "ANX-QH-ENFORCED"}\nIssued via: ${folioModalClient.deliveryMethod}`;
                     navigator.clipboard.writeText(folioText);
                     showToast({
                       title: "Folio Text Copied",
@@ -1686,6 +1729,55 @@ Your private vault access for ${whatsappDispatchClient.estate} has been authoriz
                     />
                   </div>
                 </div>
+              </div>
+
+              {/* Automated Contractual Annexure Quiet Hours Code */}
+              <div className="p-4 rounded-2xl bg-black/60 border border-[#D4AF37]/35 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 rounded-lg bg-[#D4AF37]/15 text-[#DFCA9E]">
+                      <Clock className="w-4 h-4 text-[#D4AF37]" />
+                    </div>
+                    <div>
+                      <span className="text-white font-bold text-xs block">
+                        Annexure Quiet Hours Code (Auto-Generated)
+                      </span>
+                      <span className="text-[10px] text-neutral-400">
+                        Derived from client identity & compound covenant
+                      </span>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setNewClientQuietHoursCode(
+                        generateAnnexureQuietHoursCode(newClientName, newClientEstate, newClientRoleCategory)
+                      );
+                    }}
+                    className="text-[#DFCA9E] hover:text-white flex items-center gap-1 text-[11px] underline"
+                    title="Regenerate Annexure Code"
+                  >
+                    <RefreshCw className="w-3 h-3" />
+                    Regenerate
+                  </button>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    required
+                    value={newClientQuietHoursCode}
+                    onChange={(e) => setNewClientQuietHoursCode(e.target.value.toUpperCase())}
+                    className="flex-1 px-3.5 py-2.5 bg-[#080B10] border border-white/15 rounded-xl text-[#DFCA9E] font-mono font-bold text-xs uppercase focus:outline-none focus:border-[#D4AF37] transition tracking-wide"
+                  />
+                  <div className="px-3 py-2.5 rounded-xl bg-white/[0.05] border border-white/10 text-[10px] font-mono text-neutral-300 whitespace-nowrap">
+                    22:00 – 07:00 WAT
+                  </div>
+                </div>
+
+                <p className="text-[10px] text-neutral-400 leading-relaxed font-mono">
+                  This code binds the client to estate quiet hours decibel covenants (&le;45dB), automated generator cutoff protocols, and resident gatepass clearance.
+                </p>
               </div>
 
               <div>

@@ -17,6 +17,7 @@ import {
   getClientVaults,
   vaultToResident,
   getActiveClientId,
+  getActiveClient,
   setActiveClientId,
   ClientVaultAccount,
 } from "@/lib/client-vault";
@@ -152,6 +153,7 @@ export default function ResidentHub() {
   };
 
   const activeResidentId = getActiveClientId();
+  const activeClient = getActiveClient();
   const resident: Resident | null =
     activeResidentId === "res-master"
       ? masterResident
@@ -398,9 +400,16 @@ export default function ResidentHub() {
               </div>
               <div>
                 <h3 className="text-base font-bold text-white">Digital Lease & Signed Compound Regulations</h3>
-                <p className="text-xs text-neutral-400">
-                  Annexure terms binding on all residents · Signed {resident.annexureSignedDate}
-                </p>
+                <div className="flex flex-wrap items-center gap-2 mt-0.5">
+                  <p className="text-xs text-neutral-400">
+                    Annexure terms binding on all residents · Signed {resident.annexureSignedDate}
+                  </p>
+                  {activeClient?.annexureQuietHoursCode && (
+                    <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-[#D4AF37]/15 text-[#DFCA9E] border border-[#D4AF37]/30">
+                      Annexure Code: {activeClient.annexureQuietHoursCode}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
 
