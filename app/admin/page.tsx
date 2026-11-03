@@ -955,7 +955,7 @@ export default function AdminOperations() {
 
           <div className="border border-white/[0.08] rounded-2xl bg-[#121722] overflow-hidden">
             {tickets.length === 0 ? (
-              <div className="py-12 px-6 text-center space-y-4">
+              <div className="py-12 px-6 text-center space-y-3">
                 <div className="w-12 h-12 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center mx-auto text-neutral-400">
                   <Wrench className="w-5 h-5 text-[#D4AF37]" />
                 </div>
@@ -964,39 +964,6 @@ export default function AdminOperations() {
                   <p className="text-xs text-neutral-400 max-w-md mx-auto">
                     All enrolled estate infrastructure is operating at 100% nominal telemetry. When maintenance or diagnostic tickets are logged by resident principals, instant dispatch and AI escrow audit controls will appear here.
                   </p>
-                </div>
-                <div className="pt-1">
-                  <button
-                    onClick={() => {
-                      const sampleTicket: MaintenanceTicket = {
-                        id: "MNT-AI-4401",
-                        unitId: "unt-01",
-                        unitName: "Executive Penthouse 4A",
-                        compoundId: compounds[0]?.id || "cmp-01",
-                        compoundName: compounds[0]?.name || "Prime Residential Enclave",
-                        residentId: "res-01",
-                        residentName: "Resident Principal",
-                        category: "HVAC & AC",
-                        title: "Quarterly VRV Central Chiller Servicing & Filter De-ionization",
-                        description: "Scheduled preventive lifecycle overhaul for master bedroom & terrace salon Daikin VRV compressors.",
-                        priority: "routine",
-                        status: "completed",
-                        beforePhotoUrl: "/hvac-before.jpg",
-                        afterPhotoUrl: "/hvac-after.jpg",
-                        contractorName: "Carrier & Daikin Certified Nigeria Ltd",
-                        contractorInvoiceAmount: 485000,
-                        invoiceAmount: 485000,
-                        contractorPaidFromEscrow: false,
-                        reportedAt: "Today, 10:30 WAT",
-                        contractorNotes: "Coil efficiency restored to 98.4%. Refrigerant pressure stabilized at 410A spec. Escrow voucher issued.",
-                      };
-                      setSelectedAuditTicket(sampleTicket);
-                    }}
-                    className="inline-flex items-center gap-2 py-2 px-4 rounded-xl bg-[#D4AF37]/15 hover:bg-[#D4AF37]/25 text-[#DFCA9E] border border-[#D4AF37]/35 text-xs font-mono font-bold transition active:scale-95"
-                  >
-                    <Cpu className="w-4 h-4 text-[#D4AF37]" />
-                    <span>Test AI Contractor & Escrow Audit Engine</span>
-                  </button>
                 </div>
               </div>
             ) : (
@@ -1418,7 +1385,7 @@ export default function AdminOperations() {
               </button>
             </div>
 
-            {/* Simulated WhatsApp Chat Bubble */}
+            {/* WhatsApp Chat Message Preview */}
             <div className="p-4 rounded-2xl bg-[#0b141b] border border-white/5 space-y-3 font-mono text-xs text-neutral-200">
               <div className="flex items-center justify-between text-[10px] text-neutral-400 pb-2 border-b border-white/5">
                 <span className="text-[#25D366] font-bold">ELEVATED STAY VIP CONCIERGE</span>
@@ -1458,7 +1425,7 @@ Your private vault access for ${whatsappDispatchClient.estate} has been authoriz
                 className="flex-1 py-3 px-4 bg-[#25D366] hover:bg-[#20ba59] text-black font-bold text-xs rounded-xl shadow-md transition flex items-center justify-center gap-2"
               >
                 <Send className="w-4 h-4 text-black" />
-                <span>Simulate Dispatch & Copy Text</span>
+                <span>Copy WhatsApp Concierge Dispatch</span>
               </button>
               <button
                 onClick={() => setWhatsappDispatchClient(null)}
