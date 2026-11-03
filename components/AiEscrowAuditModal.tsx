@@ -18,7 +18,6 @@ import {
   X,
   Copy,
   Printer,
-  Sparkles,
   ExternalLink,
   Lock,
   ArrowRight,
@@ -86,7 +85,7 @@ export function AiEscrowAuditModal({
           <div className="space-y-1">
             <div className="flex flex-wrap items-center gap-2">
               <span className="px-3 py-1 rounded-full text-[10px] font-mono tracking-wider bg-[#D4AF37]/15 text-[#DFCA9E] border border-[#D4AF37]/30 uppercase font-bold flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
+                <Cpu className="w-3.5 h-3.5 text-[#D4AF37]" />
                 AI ESCROW WORKMANSHIP & INVOICE AUDITOR
               </span>
               <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">

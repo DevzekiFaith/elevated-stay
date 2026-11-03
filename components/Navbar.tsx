@@ -23,7 +23,6 @@ import {
   AlertCircle,
   Key,
   MessageSquare,
-  Sparkles,
   Plus,
   Power,
 } from "lucide-react";

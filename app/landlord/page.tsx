@@ -57,7 +57,6 @@ import {
   X,
   KeyRound,
   Key,
-  Sparkles,
   Phone,
   Mail,
   UserPlus,

@@ -60,7 +60,7 @@ import {
   Send,
   Smartphone,
   Key,
-  Sparkles,
+  Cpu,
   Printer,
   Trash2,
   UserPlus,
@@ -994,7 +994,7 @@ export default function AdminOperations() {
                     }}
                     className="inline-flex items-center gap-2 py-2 px-4 rounded-xl bg-[#D4AF37]/15 hover:bg-[#D4AF37]/25 text-[#DFCA9E] border border-[#D4AF37]/35 text-xs font-mono font-bold transition active:scale-95"
                   >
-                    <Sparkles className="w-4 h-4 text-[#D4AF37]" />
+                    <Cpu className="w-4 h-4 text-[#D4AF37]" />
                     <span>Test AI Contractor & Escrow Audit Engine</span>
                   </button>
                 </div>
@@ -1046,7 +1046,7 @@ export default function AdminOperations() {
                             className="py-1 px-2 rounded-lg bg-[#D4AF37]/15 hover:bg-[#D4AF37] text-[#DFCA9E] hover:text-[#0A0D12] font-bold text-[11px] border border-[#D4AF37]/35 transition flex items-center gap-1 cursor-pointer"
                             title="Open AI Workmanship & Escrow Invoice Audit"
                           >
-                            <Sparkles className="w-3 h-3" />
+                            <Cpu className="w-3 h-3" />
                             <span>AI Audit</span>
                           </button>
 

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { MaintenanceTicket } from "@/lib/types";
-import { Wrench, Camera, AlertTriangle, Upload, Check, X, Sparkles, ShieldCheck, Cpu } from "lucide-react";
+import { Wrench, Camera, AlertTriangle, Upload, Check, X, ShieldCheck, Cpu } from "lucide-react";
 import { Logo } from "./Logo";
 import { useToast } from "./ToastProvider";
 
@@ -177,7 +177,7 @@ export function MaintenanceTicketModal({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="p-1 rounded bg-[#C2A774]/15 text-[#C2A774]">
-                  <Sparkles className="w-3.5 h-3.5" />
+                  <Cpu className="w-3.5 h-3.5" />
                 </div>
                 <span className="text-[11px] font-semibold text-neutral-200">AI Escrow Audit Protocol Active</span>
               </div>

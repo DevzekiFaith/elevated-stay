@@ -110,3 +110,4 @@ High-net-worth family principals and diaspora property owners demand complete di
   - Crisp Structural Accents: Emerald `#10B981`, Cyan `#06B6D4`, Amber `#F59E0B`
 - **Typography:** Inter with monospace accents for financial figures, subaccounts, and cryptographic hashes.
 - **Responsiveness:** Full mobile responsiveness with tactile bottom sheets and high-contrast desktop HUDs.
+

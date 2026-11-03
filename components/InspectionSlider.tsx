@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2, ShieldCheck, Wrench, Check, ArrowRight, Gauge, Cpu, Droplets, Zap, ShieldAlert, FileCheck, Sparkles } from "lucide-react";
+import { CheckCircle2, ShieldCheck, Wrench, Check, ArrowRight, Gauge, Cpu, Droplets, Zap, ShieldAlert, FileCheck } from "lucide-react";
 import { formatNaira } from "@/lib/payment-split";
 import { MaintenanceTicket } from "@/lib/types";
 import { AiEscrowAuditModal } from "./AiEscrowAuditModal";
@@ -177,7 +177,7 @@ export function InspectionSlider({
             className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono text-[#0A0D12] bg-gradient-to-r from-[#D4AF37] to-[#F5E6B8] hover:brightness-110 font-bold shadow-md shadow-[#D4AF37]/20 transition-all active:scale-95 cursor-pointer"
             title="Inspect AI Computer Vision & Quantity Surveyor Invoice Audit"
           >
-            <Sparkles className="w-3.5 h-3.5 text-[#0A0D12]" />
+            <Cpu className="w-3.5 h-3.5 text-[#0A0D12]" />
             <span>AI AUDIT PROOF</span>
           </button>
 
@@ -348,7 +348,7 @@ export function InspectionSlider({
             onClick={() => setShowAiAuditModal(true)}
             className="text-[11px] text-[#DFCA9E] hover:underline font-mono flex items-center gap-1 cursor-pointer"
           >
-            <Sparkles className="w-3 h-3 text-[#D4AF37]" />
+            <Cpu className="w-3 h-3 text-[#D4AF37]" />
             <span>View Full AI Audit &rarr;</span>
           </button>
           <span className="text-[#DFCA9E] font-semibold bg-[#D4AF37]/10 px-2.5 py-0.5 rounded-full border border-[#D4AF37]/20">
