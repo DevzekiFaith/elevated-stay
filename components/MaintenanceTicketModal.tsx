@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { MaintenanceTicket } from "@/lib/types";
-import { Wrench, Camera, AlertTriangle, Upload, Check, X } from "lucide-react";
+import { Wrench, Camera, AlertTriangle, Upload, Check, X, Sparkles, ShieldCheck, Cpu } from "lucide-react";
 import { Logo } from "./Logo";
 import { useToast } from "./ToastProvider";
 
@@ -170,6 +170,27 @@ export function MaintenanceTicketModal({
                 </div>
               )}
             </div>
+          </div>
+
+          {/* AI Pre-Dispatch Quality Gate */}
+          <div className="p-3.5 rounded-xl bg-[#0B0F17] border border-[#C2A774]/25 space-y-2">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="p-1 rounded bg-[#C2A774]/15 text-[#C2A774]">
+                  <Sparkles className="w-3.5 h-3.5" />
+                </div>
+                <span className="text-[11px] font-semibold text-neutral-200">AI Escrow Audit Protocol Active</span>
+              </div>
+              <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                Auto-Triage Active
+              </span>
+            </div>
+            <p className="text-[10px] text-neutral-400 leading-relaxed">
+              Every contractor dispatch is ringfenced against your compound&apos;s facility escrow. 
+              {photoSelected 
+                ? " Baseline photo indexed. Contractor invoice will be verified against market rate benchmarks and post-repair imagery before funds disburse."
+                : " Attach a photo to automatically unlock computer vision verification and expedite contractor mobilization."}
+            </p>
           </div>
 
           <div className="pt-2 flex flex-col sm:flex-row items-center gap-2.5">

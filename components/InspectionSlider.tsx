@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2, ShieldCheck, Wrench, Check, ArrowRight, Gauge, Cpu, Droplets, Zap, ShieldAlert, FileCheck } from "lucide-react";
+import { CheckCircle2, ShieldCheck, Wrench, Check, ArrowRight, Gauge, Cpu, Droplets, Zap, ShieldAlert, FileCheck, Sparkles } from "lucide-react";
 import { formatNaira } from "@/lib/payment-split";
 import { MaintenanceTicket } from "@/lib/types";
+import { AiEscrowAuditModal } from "./AiEscrowAuditModal";
 
 interface InspectionSliderProps {
   title: string;
@@ -36,6 +37,7 @@ export function InspectionSlider({
   const [sliderPosition, setSliderPosition] = useState(50); // percentage 0 to 100
   const [viewMode, setViewMode] = useState<"split" | "before" | "after">("split");
   const [selectedTicketIndex, setSelectedTicketIndex] = useState(0);
+  const [showAiAuditModal, setShowAiAuditModal] = useState(false);
 
   // If tickets list is provided, we can dynamically drive the ticket state
   const activeTicket = tickets && tickets.length > 0 ? tickets[selectedTicketIndex] : null;
@@ -49,6 +51,28 @@ export function InspectionSlider({
   const currentBeforeImg = activeTicket ? activeTicket.beforePhotoUrl : beforeImage;
   const currentAfterImg = activeTicket ? (activeTicket.afterPhotoUrl || activeTicket.beforePhotoUrl) : afterImage;
   const currentNotes = activeTicket ? (activeTicket.contractorNotes || notes) : notes;
+
+  const synthesizedTicket: MaintenanceTicket = activeTicket || {
+    id: "mnt-ai-active",
+    unitId: "unt-active",
+    unitName: currentUnit,
+    compoundId: "cmp-active",
+    compoundName: currentCompound,
+    residentId: "res-active",
+    residentName: "Resident Principal",
+    category: (currentCategory as any) || "HVAC & AC",
+    title: currentTitle,
+    description: currentNotes,
+    priority: "high",
+    status: "completed",
+    beforePhotoUrl: currentBeforeImg,
+    afterPhotoUrl: currentAfterImg,
+    contractorName: currentContractor,
+    invoiceAmount: currentCost,
+    contractorPaidFromEscrow: true,
+    reportedAt: "Verified on File",
+    contractorNotes: currentNotes,
+  };
 
   const handleSliderMove = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSliderPosition(Number(e.target.value));
@@ -147,11 +171,19 @@ export function InspectionSlider({
           </h4>
         </div>
 
-        <div className="flex items-center gap-2 self-start sm:self-auto">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono text-[#DFCA9E] bg-[#D4AF37]/15 border border-[#D4AF37]/30 font-semibold shadow-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-pulse" />
+        <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
+          <button
+            onClick={() => setShowAiAuditModal(true)}
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono text-[#0A0D12] bg-gradient-to-r from-[#D4AF37] to-[#F5E6B8] hover:brightness-110 font-bold shadow-md shadow-[#D4AF37]/20 transition-all active:scale-95 cursor-pointer"
+            title="Inspect AI Computer Vision & Quantity Surveyor Invoice Audit"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-[#0A0D12]" />
+            <span>AI AUDIT PROOF</span>
+          </button>
+
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-mono text-[#DFCA9E] bg-[#D4AF37]/15 border border-[#D4AF37]/30 font-semibold shadow-sm">
             <CheckCircle2 className="w-3.5 h-3.5 text-[#D4AF37]" />
-            QS AUDITED
+            QS CERTIFIED
           </span>
         </div>
       </div>
@@ -306,15 +338,32 @@ export function InspectionSlider({
       </div>
 
       {/* Footer Instructions & Proof Tag */}
-      <div className="text-[10px] text-neutral-400 font-mono flex items-center justify-between pt-1">
+      <div className="text-[10px] text-neutral-400 font-mono flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1 border-t border-white/[0.04]">
         <span className="flex items-center gap-1.5">
           <FileCheck className="w-3.5 h-3.5 text-[#D4AF37]" />
           <span>Voucher Hash: ESC-2026-VCHR-88421</span>
         </span>
-        <span className="text-[#DFCA9E] font-semibold bg-[#D4AF37]/10 px-2.5 py-0.5 rounded-full border border-[#D4AF37]/20">
-          100% Escrow Funded
-        </span>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setShowAiAuditModal(true)}
+            className="text-[11px] text-[#DFCA9E] hover:underline font-mono flex items-center gap-1 cursor-pointer"
+          >
+            <Sparkles className="w-3 h-3 text-[#D4AF37]" />
+            <span>View Full AI Audit &rarr;</span>
+          </button>
+          <span className="text-[#DFCA9E] font-semibold bg-[#D4AF37]/10 px-2.5 py-0.5 rounded-full border border-[#D4AF37]/20">
+            100% Escrow Funded
+          </span>
+        </div>
       </div>
+
+      {/* Interactive AI Escrow Audit Modal */}
+      {showAiAuditModal && (
+        <AiEscrowAuditModal
+          ticket={synthesizedTicket}
+          onClose={() => setShowAiAuditModal(false)}
+        />
+      )}
     </div>
   );
 }

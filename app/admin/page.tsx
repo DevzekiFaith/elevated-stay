@@ -6,6 +6,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Logo } from "@/components/Logo";
 import { CompoundImageCarousel } from "@/components/CompoundImageCarousel";
+import { AiEscrowAuditModal } from "@/components/AiEscrowAuditModal";
 import { useToast } from "@/components/ToastProvider";
 import {
   getLiveCompounds,
@@ -74,6 +75,7 @@ export default function AdminOperations() {
   const { showToast } = useToast();
   const [compounds, setCompounds] = useState<Compound[]>(() => getLiveCompounds());
   const [tickets, setTickets] = useState<MaintenanceTicket[]>([]);
+  const [selectedAuditTicket, setSelectedAuditTicket] = useState<MaintenanceTicket | null>(null);
   const [selectedCity, setSelectedCity] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [copiedBankId, setCopiedBankId] = useState<string | null>(null);
@@ -953,15 +955,48 @@ export default function AdminOperations() {
 
           <div className="border border-white/[0.08] rounded-2xl bg-[#121722] overflow-hidden">
             {tickets.length === 0 ? (
-              <div className="py-12 px-6 text-center space-y-3">
+              <div className="py-12 px-6 text-center space-y-4">
                 <div className="w-12 h-12 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center mx-auto text-neutral-400">
                   <Wrench className="w-5 h-5 text-[#D4AF37]" />
                 </div>
                 <div className="space-y-1">
                   <p className="text-sm font-semibold text-white">No Active Contractor Tickets</p>
                   <p className="text-xs text-neutral-400 max-w-md mx-auto">
-                    All enrolled estate infrastructure is operating at 100% nominal telemetry. When maintenance or diagnostic tickets are logged by resident principals, instant dispatch controls will appear here.
+                    All enrolled estate infrastructure is operating at 100% nominal telemetry. When maintenance or diagnostic tickets are logged by resident principals, instant dispatch and AI escrow audit controls will appear here.
                   </p>
+                </div>
+                <div className="pt-1">
+                  <button
+                    onClick={() => {
+                      const sampleTicket: MaintenanceTicket = {
+                        id: "MNT-AI-4401",
+                        unitId: "unt-01",
+                        unitName: "Executive Penthouse 4A",
+                        compoundId: compounds[0]?.id || "cmp-01",
+                        compoundName: compounds[0]?.name || "Prime Residential Enclave",
+                        residentId: "res-01",
+                        residentName: "Resident Principal",
+                        category: "HVAC & AC",
+                        title: "Quarterly VRV Central Chiller Servicing & Filter De-ionization",
+                        description: "Scheduled preventive lifecycle overhaul for master bedroom & terrace salon Daikin VRV compressors.",
+                        priority: "routine",
+                        status: "completed",
+                        beforePhotoUrl: "/hvac-before.jpg",
+                        afterPhotoUrl: "/hvac-after.jpg",
+                        contractorName: "Carrier & Daikin Certified Nigeria Ltd",
+                        contractorInvoiceAmount: 485000,
+                        invoiceAmount: 485000,
+                        contractorPaidFromEscrow: false,
+                        reportedAt: "Today, 10:30 WAT",
+                        contractorNotes: "Coil efficiency restored to 98.4%. Refrigerant pressure stabilized at 410A spec. Escrow voucher issued.",
+                      };
+                      setSelectedAuditTicket(sampleTicket);
+                    }}
+                    className="inline-flex items-center gap-2 py-2 px-4 rounded-xl bg-[#D4AF37]/15 hover:bg-[#D4AF37]/25 text-[#DFCA9E] border border-[#D4AF37]/35 text-xs font-mono font-bold transition active:scale-95"
+                  >
+                    <Sparkles className="w-4 h-4 text-[#D4AF37]" />
+                    <span>Test AI Contractor & Escrow Audit Engine</span>
+                  </button>
                 </div>
               </div>
             ) : (
@@ -973,7 +1008,7 @@ export default function AdminOperations() {
                     <th className="py-3 px-4 font-medium">Priority</th>
                     <th className="py-3 px-4 font-medium">Contractor / Status</th>
                     <th className="py-3 px-4 font-medium text-right">Escrow Cost</th>
-                    <th className="py-3 px-4 font-medium text-center">Action</th>
+                    <th className="py-3 px-4 font-medium text-center">Action & AI Audit</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/[0.06] text-neutral-300">
@@ -1005,18 +1040,29 @@ export default function AdminOperations() {
                         {t.invoiceAmount ? formatNaira(t.invoiceAmount) : "Pending Est."}
                       </td>
                       <td className="py-3.5 px-4 text-center">
-                        {t.status === "reported" ? (
+                        <div className="flex items-center justify-center gap-1.5">
                           <button
-                            onClick={() => handleDispatchContractor(t.id)}
-                            className="py-1 px-3 rounded-lg bg-[#D4AF37] hover:bg-[#E5C158] text-[#0A0D12] font-bold text-[11px] shadow-sm transition"
+                            onClick={() => setSelectedAuditTicket(t)}
+                            className="py-1 px-2 rounded-lg bg-[#D4AF37]/15 hover:bg-[#D4AF37] text-[#DFCA9E] hover:text-[#0A0D12] font-bold text-[11px] border border-[#D4AF37]/35 transition flex items-center gap-1 cursor-pointer"
+                            title="Open AI Workmanship & Escrow Invoice Audit"
                           >
-                            Dispatch Contractor
+                            <Sparkles className="w-3 h-3" />
+                            <span>AI Audit</span>
                           </button>
-                        ) : (
-                          <span className="text-[11px] text-[#DFCA9E] font-mono flex items-center justify-center gap-1">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-[#D4AF37]" /> Authorized
-                          </span>
-                        )}
+
+                          {t.status === "reported" ? (
+                            <button
+                              onClick={() => handleDispatchContractor(t.id)}
+                              className="py-1 px-2.5 rounded-lg bg-white/[0.08] hover:bg-white/15 text-white font-medium text-[11px] border border-white/10 transition"
+                            >
+                              Dispatch
+                            </button>
+                          ) : (
+                            <span className="text-[11px] text-[#DFCA9E] font-mono flex items-center gap-1">
+                              <CheckCircle2 className="w-3.5 h-3.5 text-[#D4AF37]" /> Authorized
+                            </span>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -2067,6 +2113,35 @@ Your private vault access for ${whatsappDispatchClient.estate} has been authoriz
             </form>
           </div>
         </div>
+      )}
+
+      {/* AI Contractor & Escrow Audit Modal */}
+      {selectedAuditTicket && (
+        <AiEscrowAuditModal
+          ticket={selectedAuditTicket}
+          onClose={() => setSelectedAuditTicket(null)}
+          onAuthorizeEscrow={(ticketId, amount) => {
+            setTickets((prev) =>
+              prev.map((item) =>
+                item.id === ticketId
+                  ? {
+                      ...item,
+                      status: "completed",
+                      contractorPaidFromEscrow: true,
+                      invoiceAmount: amount,
+                      contractorInvoiceAmount: amount,
+                    }
+                  : item
+              )
+            );
+            showToast({
+              title: "Escrow Release Authorized",
+              detail: `${formatNaira(amount)} disbursed from Facility Escrow to contractor following AI audit verification.`,
+              type: "finance",
+            });
+          }}
+          isAuthorizedAlready={selectedAuditTicket.status === "completed"}
+        />
       )}
 
       <Footer />
