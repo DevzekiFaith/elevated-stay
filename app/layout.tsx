@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ToastProvider } from "@/components/ToastProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://stay.com.ng"),
@@ -64,6 +65,7 @@ export default function RootLayout({
         <ThemeProvider>
           <ToastProvider>{children}</ToastProvider>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
