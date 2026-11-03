@@ -181,7 +181,7 @@ export function MaintenanceTicketModal({
                 </div>
                 <span className="text-[11px] font-semibold text-neutral-200">AI Escrow Audit Protocol Active</span>
               </div>
-              <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-white border border-emerald-500/30 font-medium">
                 Auto-Triage Active
               </span>
             </div>

@@ -127,7 +127,10 @@ export function SplitFlowVisualizer() {
                 <span className="text-lg font-bold font-mono text-[#DFCA9E] block">
                   {formatNaira(split.destinationSummary.landlordSubaccountPayout)}
                 </span>
-                <span className="text-[10px] font-mono text-emerald-400">0 Day Clearing Delay</span>
+                <span className="text-[10px] font-mono text-white flex items-center justify-start sm:justify-end gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  0 Day Clearing Delay
+                </span>
               </div>
             </div>
           </motion.div>

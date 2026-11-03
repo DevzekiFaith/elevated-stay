@@ -466,7 +466,8 @@ export default function ResidentHub() {
               <p className="leading-relaxed text-[11px] text-neutral-400">
                 3. <strong>Pet Etiquette:</strong> Domestic pets are permitted on leashes in common landscaped areas. Waste must be removed immediately by pet owners.
               </p>
-              <div className="text-[10px] text-emerald-400 font-mono">
+              <div className="text-[10px] text-white font-mono flex items-center gap-1.5">
+                <Check className="w-3 h-3 text-emerald-400" />
                 Digitally authenticated on file with Elevated Stay Legal Arm.
               </div>
             </motion.div>
@@ -892,7 +893,7 @@ export default function ResidentHub() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-neutral-400">Validity:</span>
-                  <span className="text-emerald-400">{selectedQrPass.validUntil} WAT</span>
+                  <span className="text-white font-semibold font-mono">{selectedQrPass.validUntil} WAT</span>
                 </div>
                 {selectedQrPass.vehiclePlate && (
                   <div className="flex justify-between pt-1 border-t border-white/[0.06]">

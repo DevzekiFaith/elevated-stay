@@ -556,7 +556,7 @@ export default function HomePage() {
                 <div className="grid grid-cols-3 gap-2.5 p-3 rounded-2xl bg-black/50 border border-white/[0.06] text-center">
                   <div className="space-y-0.5">
                     <span className="text-[10px] font-mono text-neutral-400 uppercase block">Landlord Cost</span>
-                    <span className="text-sm sm:text-base font-bold font-mono text-emerald-400 block">₦0.00</span>
+                    <span className="text-sm sm:text-base font-bold font-mono text-white block">₦0.00</span>
                     <span className="text-[9px] text-neutral-400 font-mono block">100% Escrow</span>
                   </div>
                   <div className="space-y-0.5 border-x border-white/[0.08]">
@@ -602,7 +602,7 @@ export default function HomePage() {
                   {/* Tenet 03 */}
                   <div className="p-3.5 rounded-2xl bg-[#090C14] border border-white/[0.06] hover:border-[#D4AF37]/30 transition-all space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300">
+                      <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/20 text-white border border-emerald-500/30">
                         03
                       </span>
                       <strong className="text-white text-xs font-semibold">Quantity Surveyor Sign-Off</strong>

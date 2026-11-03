@@ -88,7 +88,7 @@ export function AiEscrowAuditModal({
                 <Cpu className="w-3.5 h-3.5 text-[#D4AF37]" />
                 AI ESCROW WORKMANSHIP & INVOICE AUDITOR
               </span>
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/15 text-white border border-emerald-500/30 flex items-center gap-1">
                 <CheckCircle2 className="w-3 h-3 text-emerald-400" />
                 {audit.confidenceScore}% CONFIDENCE
               </span>
@@ -196,7 +196,7 @@ export function AiEscrowAuditModal({
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none" />
-                    <span className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-black/85 backdrop-blur-md text-[10px] font-mono text-emerald-400 border border-emerald-500/40 flex items-center gap-1.5 font-bold">
+                    <span className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-black/85 backdrop-blur-md text-[10px] font-mono text-white border border-emerald-500/40 flex items-center gap-1.5 font-bold">
                       <Check className="w-3.5 h-3.5 text-emerald-400" />
                       AFTER REMEDIATION (CERTIFIED)
                     </span>
@@ -206,7 +206,7 @@ export function AiEscrowAuditModal({
                   </div>
                   <div className="p-3.5 bg-[#0A0D12] border-t border-white/10 space-y-1 font-mono text-xs">
                     <div className="text-[10px] text-neutral-400 uppercase">AI Post-Work Remediation Proof:</div>
-                    <div className="text-emerald-300 text-[11px] leading-relaxed">
+                    <div className="text-white text-[11px] leading-relaxed">
                       {audit.visualRemediationCheck.afterRemediationVerified}
                     </div>
                   </div>
@@ -233,7 +233,7 @@ export function AiEscrowAuditModal({
                     >
                       <div className="flex items-center justify-between">
                         <span className="text-[10px] text-neutral-400 uppercase">{item.coordinates}</span>
-                        <span className="px-1.5 py-0.2 rounded text-[9px] bg-emerald-500/15 text-emerald-400 font-bold">
+                        <span className="px-1.5 py-0.2 rounded text-[9px] bg-emerald-500/15 text-white font-bold">
                           {Math.round(item.confidence * 100)}% Match
                         </span>
                       </div>
@@ -249,7 +249,7 @@ export function AiEscrowAuditModal({
               <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/25 flex items-start gap-3 text-xs">
                 <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
                 <div className="space-y-1">
-                  <div className="text-emerald-300 font-bold font-mono">
+                  <div className="text-white font-bold font-mono">
                     Visual Remediation Verified by Automated Vision Protocol
                   </div>
                   <p className="text-neutral-300 text-[11px] leading-relaxed">
@@ -286,15 +286,15 @@ export function AiEscrowAuditModal({
                   <div
                     className={`text-xl sm:text-2xl font-bold ${
                       Math.abs(audit.invoiceAudit.variancePercentage) <= 12
-                        ? "text-emerald-400"
+                        ? "text-white"
                         : "text-amber-400"
                     }`}
                   >
                     {audit.invoiceAudit.variancePercentage >= 0 ? "+" : ""}
                     {audit.invoiceAudit.variancePercentage}%
                   </div>
-                  <div className="text-[10px] text-emerald-400 flex items-center gap-1 font-bold">
-                    <Check className="w-3 h-3" /> Within Acceptable Tolerance
+                  <div className="text-[10px] text-white flex items-center gap-1 font-bold">
+                    <Check className="w-3 h-3 text-emerald-400" /> Within Acceptable Tolerance
                   </div>
                 </div>
               </div>
@@ -337,7 +337,7 @@ export function AiEscrowAuditModal({
                           <span
                             className={`px-2 py-0.5 rounded text-[10px] font-bold ${
                               Math.abs(item.variancePercentage) <= 10
-                                ? "bg-emerald-500/10 text-emerald-400"
+                                ? "bg-emerald-500/15 text-white"
                                 : "bg-amber-500/10 text-amber-400"
                             }`}
                           >
@@ -346,7 +346,7 @@ export function AiEscrowAuditModal({
                           </span>
                         </td>
                         <td className="py-3 px-4 text-center">
-                          <span className="inline-flex items-center gap-1 text-[11px] text-emerald-400">
+                          <span className="inline-flex items-center gap-1 text-[11px] text-white font-medium">
                             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
                             Verified
                           </span>
@@ -420,10 +420,10 @@ export function AiEscrowAuditModal({
 
                   <div>
                     <span className="text-[10px] text-neutral-400 block uppercase">Net Contractor Wire:</span>
-                    <span className="text-base font-bold text-emerald-400 font-mono mt-0.5 block">
+                    <span className="text-base font-bold text-white font-mono mt-0.5 block">
                       {formatNaira(audit.escrowRecommendation.settlementSplit.contractorPayoutNaira)}
                     </span>
-                    <span className="text-[10px] text-emerald-400">Direct Paystack / Wire</span>
+                    <span className="text-[10px] text-neutral-300">Direct Paystack / Wire</span>
                   </div>
                 </div>
 
@@ -463,7 +463,7 @@ export function AiEscrowAuditModal({
             </button>
 
             {authorizedState ? (
-              <div className="py-2.5 px-5 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-mono font-bold flex items-center justify-center gap-2">
+              <div className="py-2.5 px-5 rounded-xl bg-emerald-500/20 text-white border border-emerald-500/30 text-xs font-mono font-bold flex items-center justify-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                 <span>Escrow Payment Disbursed</span>
               </div>

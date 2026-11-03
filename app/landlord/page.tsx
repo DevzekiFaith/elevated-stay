@@ -687,7 +687,7 @@ export default function LandlordDashboard() {
                             <div className="text-sm font-bold text-white font-sans">{u.unitNumber}</div>
                             <div className="text-xs text-neutral-400">{u.type}</div>
                           </div>
-                          <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold uppercase">
+                          <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/15 text-white border border-emerald-500/30 font-bold uppercase">
                             {u.status}
                           </span>
                         </div>
@@ -741,7 +741,7 @@ export default function LandlordDashboard() {
                             <span className="font-mono font-bold text-sm text-white">
                               {formatNaira(tx.landlordSplitAmount || tx.totalAmount)}
                             </span>
-                            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold uppercase">
+                            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-white border border-emerald-500/30 font-bold uppercase">
                               Settled 92.5%
                             </span>
                           </div>
